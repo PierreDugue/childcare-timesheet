@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from "uuid";
 import type { RootState } from "../app/store";
 
 export interface FamilyState {
-  value: family[];
+  value: Array<family>;
 }
 
 const initialState: FamilyState = {
@@ -81,15 +81,15 @@ export const familySlice = createSlice({
 });
 
 export const { addFamily, removeFamily } = familySlice.actions;
-export const selectFamilies = (state: RootState) => state.family;
-export const selectAllFamilies = createSelector(
-  [selectFamilies],
-  (family) => family // Retourne simplement le tableau de familles
+export const selectAllFamily = (state: RootState) => state.family;
+export const selectFamilyId = (state: RootState, familyId: string) => familyId;
+
+export const selectFamilyById = createSelector(
+  [selectAllFamily, selectFamilyId],
+  (families, familyId) => {
+    console.log('families', families, familyId);
+    return families.family.value?.find((family) => family.familyId === familyId);
+  }
 );
 
-export const selectfamilyById = createSelector(
-  [selectFamilies, (state: RootState, familyId: string) => familyId],
-  (families, familyId) =>
-    families.value?.find((family) => family.familyId === familyId)
-);
 export default familySlice.reducer;
