@@ -75,20 +75,43 @@ export const familySlice = createSlice({
       state.value.push(newfamily);
     },
     removeFamily: (state, action: PayloadAction<string>) => {
-      state.value.filter((family) => family.familyId !== action.payload);
+      state.value = state.value.filter(
+        (family) => family.familyId !== action.payload
+      );
+    },
+    addLogs: (
+      state,
+      action: PayloadAction<{ familyId: string; log: familyLogs }>
+    ) => {
+      const { familyId, log } = action.payload;
+      const family = state.value.find((f) => f.familyId === familyId);
+      const existingLog = family?.logs.find(
+        (familyLog) =>
+          new Date(familyLog.date).toString() === new Date(log.date).toString()
+      );
+
+      if (!family) return;
+      if (!existingLog) {
+        family?.logs.push(log);
+      } else {
+        existingLog.startHour = log.startHour;
+        existingLog.endHour = log.endHour;
+      }
     },
   },
 });
 
-export const { addFamily, removeFamily } = familySlice.actions;
+export const { addFamily, removeFamily, addLogs } = familySlice.actions;
 export const selectAllFamily = (state: RootState) => state.family;
 export const selectFamilyId = (state: RootState, familyId: string) => familyId;
 
 export const selectFamilyById = createSelector(
   [selectAllFamily, selectFamilyId],
   (families, familyId) => {
-    console.log('families', families, familyId);
-    return families.family.value?.find((family) => family.familyId === familyId);
+    console.log("families", families, familyId);
+    return families.family.value?.find(
+      (family) => family.familyId === familyId
+    );
   }
 );
 

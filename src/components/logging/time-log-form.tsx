@@ -1,16 +1,31 @@
+import { useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { LogFormInputs } from "../../models/models";
 import {
+  addLogs,
   selectAllFamily,
   selectFamilyById,
   type FamilyState,
 } from "../../slices/familySlice";
-import { useEffect } from "react";
 
 export function TimeLogForm() {
   const { register, handleSubmit } = useForm<LogFormInputs>();
-  const onSubmit: SubmitHandler<LogFormInputs> = (data) => console.log(data);
+  const dispatch = useDispatch();
+  const onSubmit: SubmitHandler<LogFormInputs> = (data) => {
+    console.log(data);
+    dispatch(
+      addLogs({
+        familyId: data.family,
+        log: {
+          date: data.logs.date,
+          startHour: data.logs.startHour,
+          endHour: data.logs.endHour,
+          signature: data.comment ?? "",
+        },
+      })
+    );
+  };
 
   const families = useSelector(selectAllFamily);
   const family = useSelector((state: FamilyState) =>
@@ -24,7 +39,18 @@ export function TimeLogForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <select {...register("family")}></select>
+      <select {...register("family")}>
+        {families.value.map((family) => (
+          <option key={family.familyId} value={family.familyId}>
+            {family.name}
+          </option>
+        ))}
+      </select>
+      <input type="date" {...register("logs.date")} />
+      <input type="time" {...register("logs.startHour")} />
+      <input type="time" {...register("logs.endHour")} />
+      <input type="text" {...register("comment")} />
+      <button type="submit">Save</button>
     </form>
   );
 }

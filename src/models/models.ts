@@ -14,12 +14,14 @@ export type family = {
 };
 
 export type familyLogs = {
-  startDate: Date;
-  endDate: Date;
+  date: Date;
+  startHour: Date | null;
+  endHour: Date | null;
   signature: string;
 };
 
 export type LogFormInputs = {
   family: string;
-  logs: familyLogs[];
+  logs: familyLogs;
+  comment: string;
 };
