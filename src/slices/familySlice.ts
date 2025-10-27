@@ -20,13 +20,30 @@ const initialState: FamilyState = {
       name: "Famille Dubois",
       logs: [
         {
-          startDate: new Date("2024-10-01T09:00:00Z"),
-          endDate: new Date("2024-10-01T17:30:00Z"),
+          startHour: new Date("2024-10-01T09:00:00Z"),
+          endHour: new Date("2024-10-01T17:30:00Z"),
           signature: "PaulineD",
         },
         {
-          startDate: new Date("2024-10-05T14:00:00Z"),
-          endDate: new Date("2024-10-05T16:00:00Z"),
+          startHour: new Date("2024-10-05T14:00:00Z"),
+          endHour: new Date("2024-10-05T16:00:00Z"),
+          signature: "Admin",
+        },
+      ] as familyLogs[],
+    },
+    {
+      familyId: "fml_4a3b1d9c_02",
+      userId: "user_p4_7720",
+      name: "Famille Test",
+      logs: [
+        {
+          startHour: new Date("2024-10-01T09:00:00Z"),
+          endHour: new Date("2024-10-01T17:30:00Z"),
+          signature: "PaulineD",
+        },
+        {
+          startHour: new Date("2024-10-05T14:00:00Z"),
+          endHour: new Date("2024-10-05T16:00:00Z"),
           signature: "Admin",
         },
       ] as familyLogs[],
@@ -47,8 +64,8 @@ const initialState: FamilyState = {
       name: "Famille LeBlanc",
       logs: [
         {
-          startDate: new Date("2024-10-23T10:30:00Z"),
-          endDate: new Date("2024-10-23T18:00:00Z"),
+          startHour: new Date("2024-10-23T10:30:00Z"),
+          endHour: new Date("2024-10-23T18:00:00Z"),
           signature: "JeanneL",
         },
       ] as familyLogs[],
@@ -112,6 +129,20 @@ export const selectFamilyById = createSelector(
     return families.family.value?.find(
       (family) => family.familyId === familyId
     );
+  }
+);
+
+export const selectAllFamilyByUserId = createSelector(
+  [selectAllFamily, (_: RootState, userId: string) => userId],
+  (families, userId) => {
+    return families.family.value.filter((family) => family.userId === userId);
+  }
+);
+
+export const selectAllLogsByFamilyId = createSelector(
+  [selectAllFamilyByUserId, (_: RootState, familyId: string) => familyId],
+  (families, familyId) => {
+    return families.family.value.filter((family) => family.userId === familyId);
   }
 );
 

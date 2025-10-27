@@ -51,6 +51,9 @@ export function TimeLogForm() {
       <input type="time" {...register("logs.endHour")} />
       <input type="text" {...register("comment")} />
       <button type="submit">Save</button>
+      <button type="reset" value="Reset">
+        Reset
+      </button>
     </form>
   );
 }
