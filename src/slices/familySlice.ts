@@ -16,7 +16,7 @@ const initialState: FamilyState = {
     // --- Famille 1 : Avec des logs enregistrés ---
     {
       familyId: "fml_4a3b1d9c_01",
-      userId: "user_p4_7720",
+      userId: "f5e3b6a2-96b1-4a03-9cb9-d89b4e78c21a",
       name: "Famille Dubois",
       logs: [
         {
@@ -126,7 +126,7 @@ export const selectFamilyById = createSelector(
   [selectAllFamily, selectFamilyId],
   (families, familyId) => {
     console.log("families", families, familyId);
-    return families.family.value?.find(
+    return families.family?.value?.find(
       (family) => family.familyId === familyId
     );
   }
@@ -135,14 +135,16 @@ export const selectFamilyById = createSelector(
 export const selectAllFamilyByUserId = createSelector(
   [selectAllFamily, (_: RootState, userId: string) => userId],
   (families, userId) => {
-    return families.family.value.filter((family) => family.userId === userId);
+    return families.family?.value?.filter((family) => family.userId === userId);
   }
 );
 
 export const selectAllLogsByFamilyId = createSelector(
   [selectAllFamilyByUserId, (_: RootState, familyId: string) => familyId],
   (families, familyId) => {
-    return families.family.value.filter((family) => family.userId === familyId);
+    return families.family?.value?.filter(
+      (family) => family.userId === familyId
+    );
   }
 );
 

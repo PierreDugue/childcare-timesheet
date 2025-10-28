@@ -1,19 +1,18 @@
 import { useEffect } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
 import type { LogFormInputs } from "../../models/models";
 import {
-  addLogs,
-  selectAllFamily,
-  selectFamilyById,
-  type FamilyState,
+    addLogs,
+    selectAllFamily,
+    selectFamilyById
 } from "../../slices/familySlice";
 
 export function TimeLogForm() {
   const { register, handleSubmit } = useForm<LogFormInputs>();
   const dispatch = useDispatch();
   const onSubmit: SubmitHandler<LogFormInputs> = (data) => {
-    console.log(data);
     dispatch(
       addLogs({
         familyId: data.family,
@@ -28,8 +27,8 @@ export function TimeLogForm() {
   };
 
   const families = useSelector(selectAllFamily);
-  const family = useSelector((state: FamilyState) =>
-    selectFamilyById({ family: state }, "fml_6c7d5e4f_03")
+  const family = useSelector((state: RootState) =>
+    selectFamilyById(state, "fml_6c7d5e4f_03")
   );
 
   useEffect(() => {

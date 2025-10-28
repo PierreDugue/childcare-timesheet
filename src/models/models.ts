@@ -25,3 +25,8 @@ export type LogFormInputs = {
   logs: familyLogs;
   comment: string;
 };
+
+export type FamilyFormInputs = {
+  familyId: string;
+  name: string;
+};

@@ -45,7 +45,10 @@ export function FamilyTable() {
             variant="outlined"
             size="small"
             startIcon={<EditIcon />}
-            onClick={() => handleEdit(params.row.id)}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleEdit(params.row.id);
+            }}
           >
             Edit
           </Button>
@@ -55,7 +58,10 @@ export function FamilyTable() {
             color="error"
             size="small"
             startIcon={<DeleteIcon />}
-            onClick={() => handleDelete(params.row.id)}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleDelete(params.row.id);
+            }}
           >
             Delete
           </Button>
@@ -64,7 +70,10 @@ export function FamilyTable() {
             color="error"
             size="small"
             startIcon={<ShowChartIcon />}
-            onClick={() => handleDelete(params.row.id)}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleDelete(params.row.id);
+            }}
           >
             Show logs
           </Button>
