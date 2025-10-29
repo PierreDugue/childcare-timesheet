@@ -6,14 +6,14 @@ export type User = {
   config: [];
 };
 
-export type family = {
+export type Family = {
   familyId: string;
   userId: string;
   name: string;
-  logs: familyLogs[];
+  logs: FamilyLogs[];
 };
 
-export type familyLogs = {
+export type FamilyLogs = {
   date: Date;
   startHour: Date | null;
   endHour: Date | null;
@@ -22,7 +22,7 @@ export type familyLogs = {
 
 export type LogFormInputs = {
   family: string;
-  logs: familyLogs;
+  logs: FamilyLogs;
   comment: string;
 };
 

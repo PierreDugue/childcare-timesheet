@@ -3,12 +3,11 @@ import {
   createSlice,
   type PayloadAction,
 } from "@reduxjs/toolkit";
-import type { family, familyLogs } from "../models/models";
-import { v4 as uuidv4 } from "uuid";
+import type { Family, FamilyLogs } from "../models/models";
 import type { RootState } from "../app/store";
 
 export interface FamilyState {
-  value: Array<family>;
+  value: Array<Family>;
 }
 
 const initialState: FamilyState = {
@@ -29,7 +28,7 @@ const initialState: FamilyState = {
           endHour: new Date("2024-10-05T16:00:00Z"),
           signature: "Admin",
         },
-      ] as familyLogs[],
+      ] as FamilyLogs[],
     },
     {
       familyId: "fml_4a3b1d9c_02",
@@ -46,7 +45,7 @@ const initialState: FamilyState = {
           endHour: new Date("2024-10-05T16:00:00Z"),
           signature: "Admin",
         },
-      ] as familyLogs[],
+      ] as FamilyLogs[],
     },
 
     // --- Famille 2 : Sans logs (nouvelle famille) ---
@@ -54,7 +53,7 @@ const initialState: FamilyState = {
       familyId: "fml_b8e2f0a1_02",
       userId: "user_a9_3151",
       name: "Famille Martin",
-      logs: [] as familyLogs[],
+      logs: [] as FamilyLogs[],
     },
 
     // --- Famille 3 : Avec un seul log récent ---
@@ -68,28 +67,32 @@ const initialState: FamilyState = {
           endHour: new Date("2024-10-23T18:00:00Z"),
           signature: "JeanneL",
         },
-      ] as familyLogs[],
+      ] as FamilyLogs[],
     },
   ],
 };
 
-type AddFamilyPayload = {
-  name: string;
-  userId: string;
-};
+// type AddFamilyPayload = {
+//   name: string;
+//   familyId: string;
+//   userId: string;
+// };
 
 export const familySlice = createSlice({
   name: "family",
   initialState,
   reducers: {
-    addFamily: (state, action: PayloadAction<AddFamilyPayload>) => {
-      const newfamily: family = {
-        familyId: uuidv4(),
+    addFamily: (state, action: PayloadAction<Family>) => {
+      const newfamily: Family = {
+        familyId: action.payload.familyId,
         userId: action.payload.userId,
         name: action.payload.name,
-        logs: [],
+        logs: action.payload.logs,
       };
       state.value.push(newfamily);
+    },
+    addFamilySuccess: (state, action: PayloadAction<string>) => {
+      console.log("Family added with ID:", action.payload);
     },
     removeFamily: (state, action: PayloadAction<string>) => {
       state.value = state.value.filter(
@@ -98,7 +101,7 @@ export const familySlice = createSlice({
     },
     addLogs: (
       state,
-      action: PayloadAction<{ familyId: string; log: familyLogs }>
+      action: PayloadAction<{ familyId: string; log: FamilyLogs }>
     ) => {
       const { familyId, log } = action.payload;
       const family = state.value.find((f) => f.familyId === familyId);
@@ -118,24 +121,23 @@ export const familySlice = createSlice({
   },
 });
 
-export const { addFamily, removeFamily, addLogs } = familySlice.actions;
+export const { addFamily, addFamilySuccess, removeFamily, addLogs } =
+  familySlice.actions;
 export const selectAllFamily = (state: RootState) => state.family;
 export const selectFamilyId = (state: RootState, familyId: string) => familyId;
 
 export const selectFamilyById = createSelector(
   [selectAllFamily, selectFamilyId],
   (families, familyId) => {
-    console.log("families", families, familyId);
-    return families.family?.value?.find(
-      (family) => family.familyId === familyId
-    );
+    console.log("families by id", families, familyId);
+    return families.value?.find((family) => family.familyId === familyId);
   }
 );
 
 export const selectAllFamilyByUserId = createSelector(
   [selectAllFamily, (_: RootState, userId: string) => userId],
   (families, userId) => {
-    return families.family?.value?.filter((family) => family.userId === userId);
+    return families.value?.filter((family) => family.userId === userId);
   }
 );
 

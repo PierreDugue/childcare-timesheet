@@ -1,14 +1,11 @@
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addFamily,
-  selectFamilyById,
-  type FamilyState,
-} from "../../slices/familySlice";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import type { FamilyFormInputs } from "../../models/models";
-import { getCurrentUser } from "../../slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 import type { RootState } from "../../app/store";
+import type { FamilyFormInputs } from "../../models/models";
+import { addFamily, selectFamilyById } from "../../slices/familySlice";
+import { getCurrentUser } from "../../slices/userSlice";
 
 export function FamilyDialog(props: {
   id: string;
@@ -17,7 +14,7 @@ export function FamilyDialog(props: {
 }) {
   const currentUser = useSelector(getCurrentUser);
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm<FamilyFormInputs>();
+  const { register, handleSubmit, reset } = useForm<FamilyFormInputs>();
   const family = useSelector((state: RootState) =>
     selectFamilyById(state, props?.id)
   );
@@ -27,13 +24,16 @@ export function FamilyDialog(props: {
   };
 
   const onSubmit: SubmitHandler<FamilyFormInputs> = (data) => {
-    console.log(data, currentUser?.userId);
     dispatch(
       addFamily({
         name: data.name,
+        familyId: uuidv4(),
         userId: currentUser?.userId || "",
+        logs: [],
       })
     );
+    reset({ name: "" });
+    handleClose();
   };
 
   return (

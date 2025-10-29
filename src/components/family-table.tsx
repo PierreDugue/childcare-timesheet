@@ -1,22 +1,20 @@
-import { useSelector } from "react-redux";
-import {
-  selectAllFamilyByUserId,
-  type FamilyState,
-} from "../slices/familySlice";
-import { useEffect } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import ShowChartIcon from "@mui/icons-material/ShowChart";
 import { Button, Paper, Stack } from "@mui/material";
 import {
   DataGrid,
   type GridColDef,
   type GridRenderCellParams,
 } from "@mui/x-data-grid";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ShowChartIcon from "@mui/icons-material/ShowChart";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../app/store";
+import { selectAllFamilyByUserId } from "../slices/familySlice";
 
 export function FamilyTable() {
-  const listOfFamilies = useSelector((state: FamilyState) =>
-    selectAllFamilyByUserId({ family: state }, "user_p4_7720")
+  const listOfFamilies = useSelector((state: RootState) =>
+    selectAllFamilyByUserId(state, "f5e3b6a2-96b1-4a03-9cb9-d89b4e78c21a")
   );
 
   const handleEdit = (id: number) => {
@@ -28,12 +26,12 @@ export function FamilyTable() {
   };
 
   const logsColumns: GridColDef[] = [
-    { field: "name", headerName: "Name", width: 130 },
+    { field: "name", headerName: "Name", width: 200 },
     { field: "familyId", headerName: "ID", width: 70 },
     {
       field: "",
       headerName: "Settings",
-      width: 130,
+      width: 250,
       renderCell: (params: GridRenderCellParams) => (
         <Stack
           direction="row"
@@ -49,9 +47,7 @@ export function FamilyTable() {
               event.stopPropagation();
               handleEdit(params.row.id);
             }}
-          >
-            Edit
-          </Button>
+          ></Button>
 
           <Button
             variant="contained"
@@ -62,9 +58,7 @@ export function FamilyTable() {
               event.stopPropagation();
               handleDelete(params.row.id);
             }}
-          >
-            Delete
-          </Button>
+          ></Button>
           <Button
             variant="contained"
             color="error"
@@ -74,9 +68,7 @@ export function FamilyTable() {
               event.stopPropagation();
               handleDelete(params.row.id);
             }}
-          >
-            Show logs
-          </Button>
+          ></Button>
         </Stack>
       ),
     },
