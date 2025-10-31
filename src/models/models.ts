@@ -15,8 +15,8 @@ export type Family = {
 
 export type FamilyLogs = {
   date: Date;
-  startHour: Date | null;
-  endHour: Date | null;
+  startHour: string | null;
+  endHour: string | null;
   signature: string;
 };
 

@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import type { RootState } from "../../app/store";
 import type { FamilyFormInputs } from "../../models/models";
-import { addFamily, selectFamilyById } from "../../slices/familySlice";
+import {
+  addFamily,
+  selectFamilyById,
+  updateFamily,
+} from "../../slices/familySlice";
 import { getCurrentUser } from "../../slices/userSlice";
 
 export function FamilyDialog(props: {
@@ -14,16 +18,27 @@ export function FamilyDialog(props: {
 }) {
   const currentUser = useSelector(getCurrentUser);
   const dispatch = useDispatch();
-  const { register, handleSubmit, reset } = useForm<FamilyFormInputs>();
   const family = useSelector((state: RootState) =>
     selectFamilyById(state, props?.id)
   );
+  const { register, handleSubmit, reset } = useForm<FamilyFormInputs>({
+    values: {
+      familyId: props?.id,
+      name: props?.id !== "" && family ? family.name : "",
+    },
+  });
 
   const handleClose = () => {
     props.onClose();
   };
 
   const onSubmit: SubmitHandler<FamilyFormInputs> = (data) => {
+    if (props?.id !== "") {
+      dispatch(updateFamily({ familyId: data.familyId, newName: data.name }));
+      handleClose();
+      return;
+    }
+
     dispatch(
       addFamily({
         name: data.name,

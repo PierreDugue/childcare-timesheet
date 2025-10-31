@@ -7,31 +7,56 @@ import {
   type GridColDef,
   type GridRenderCellParams,
 } from "@mui/x-data-grid";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import type { RootState } from "../app/store";
-import { selectAllFamilyByUserId } from "../slices/familySlice";
+import { useDispatch, useSelector } from "react-redux";
+import { removeFamily, selectAllFamily } from "../slices/familySlice";
+import { AlertDialog } from "./alert-dialog";
+import { useState } from "react";
+import { useNavigate } from "react-router";
 
-export function FamilyTable() {
-  const listOfFamilies = useSelector((state: RootState) =>
-    selectAllFamilyByUserId(state, "f5e3b6a2-96b1-4a03-9cb9-d89b4e78c21a")
-  );
+export function FamilyTable(props: { onEdit: (familyId: string) => void }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const listOfFamilies = useSelector(selectAllFamily);
+  const [alertDialogConfig, setAlertDialogConfig] = useState<{
+    title: string;
+    body: string;
+  }>({ title: "", body: "" });
+  const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
+  const [familyToDelete, setFamilyToDelete] = useState<string>("");
 
-  const handleEdit = (id: number) => {
-    console.log("Edit family:", id);
+  const handleEdit = (id: string) => {
+    props.onEdit(id);
   };
 
-  const handleDelete = (id: number) => {
-    console.log("Delete family:", id);
+  const handleDelete = (familyId: string, name: string) => {
+    setFamilyToDelete(familyId);
+    setAlertDialogConfig({
+      title: "ATTENTION: Delete Family",
+      body: `Are you sure you want to delete family: ${name}? This well also delete all associated logs.`,
+    });
+    setAlertDialogOpen(true);
+  };
+
+  const handleApproveDelete = () => {
+    dispatch(removeFamily(familyToDelete));
+    setAlertDialogOpen(false);
+  };
+
+  const handleCloseAlert = () => {
+    setAlertDialogOpen(false);
+  };
+
+  const handleLogs = (familyId: string) => {
+    navigate(`/details/${familyId}`);
   };
 
   const logsColumns: GridColDef[] = [
-    { field: "name", headerName: "Name", width: 200 },
-    { field: "familyId", headerName: "ID", width: 70 },
+    { field: "name", headerName: "Name", flex: 1 },
+    { field: "familyId", headerName: "ID", flex: 1 },
     {
       field: "",
       headerName: "Settings",
-      width: 250,
+      flex: 2,
       renderCell: (params: GridRenderCellParams) => (
         <Stack
           direction="row"
@@ -45,7 +70,7 @@ export function FamilyTable() {
             startIcon={<EditIcon />}
             onClick={(event) => {
               event.stopPropagation();
-              handleEdit(params.row.id);
+              handleEdit(params.row.familyId);
             }}
           ></Button>
 
@@ -56,7 +81,7 @@ export function FamilyTable() {
             startIcon={<DeleteIcon />}
             onClick={(event) => {
               event.stopPropagation();
-              handleDelete(params.row.id);
+              handleDelete(params.row.familyId, params.row.name);
             }}
           ></Button>
           <Button
@@ -66,7 +91,7 @@ export function FamilyTable() {
             startIcon={<ShowChartIcon />}
             onClick={(event) => {
               event.stopPropagation();
-              handleDelete(params.row.id);
+              handleLogs(params.row.familyId);
             }}
           ></Button>
         </Stack>
@@ -74,22 +99,28 @@ export function FamilyTable() {
     },
   ];
 
-  useEffect(() => {
-    console.log("families for user_p4_7720", listOfFamilies);
-  });
   return (
     <div>
-      <Paper sx={{ height: 400, width: "100%" }}>
+      <Paper sx={{ width: "100%" }}>
         <DataGrid
           getRowId={(listOfFamilies) => listOfFamilies.familyId}
-          rows={listOfFamilies}
+          rows={listOfFamilies.value}
           columns={logsColumns}
-          initialState={{ pagination: {} }}
-          pageSizeOptions={[5, 10]}
-          checkboxSelection
+          initialState={{
+            pagination: { paginationModel: { pageSize: 20, page: 0 } },
+          }}
+          pageSizeOptions={[5, 10, 20, 50]}
           sx={{ border: 0 }}
+          disableRowSelectionOnClick
         />
       </Paper>
+      <AlertDialog
+        title={alertDialogConfig.title}
+        body={alertDialogConfig.body}
+        onClose={handleCloseAlert}
+        onApprove={handleApproveDelete}
+        open={alertDialogOpen}
+      ></AlertDialog>
     </div>
   );
 }

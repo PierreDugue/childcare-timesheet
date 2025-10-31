@@ -8,8 +8,15 @@ export function FamilySettings() {
   const [familyId, setFamilyId] = useState<string>("");
 
   const handleAdd = () => {
+    setFamilyId("");
     setIsDialogOpen(true);
   };
+
+  const handleEdit = (familyId: string) => {
+    setFamilyId(familyId);
+    setIsDialogOpen(true);
+  };
+
 
   const handleClose = () => {
     setIsDialogOpen(false);
@@ -24,7 +31,7 @@ export function FamilySettings() {
         open={isDialogOpen}
         onClose={handleClose}
       ></FamilyDialog>
-      <FamilyTable></FamilyTable>
+      <FamilyTable onEdit={handleEdit}></FamilyTable>
     </div>
   );
 }

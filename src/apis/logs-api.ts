@@ -26,7 +26,7 @@ export async function saveFamily(data: Family) {
     // Simulate API call
     // await axios.post("/family", data);
     // await new Promise((resolve) => setTimeout(resolve, 1000));
-    return await axios.post("https://jsonplaceholder.typicode.com/posts", data);
+    return axios.post("https://jsonplaceholder.typicode.com/posts", data);
   } catch (err) {
     console.error("Failed to save family", err);
     throw err;

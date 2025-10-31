@@ -12,71 +12,27 @@ export interface FamilyState {
 
 const initialState: FamilyState = {
   value: [
-    // --- Famille 1 : Avec des logs enregistrés ---
     {
-      familyId: "fml_4a3b1d9c_01",
+      familyId: "f5e3b6a2-95b1-4a13-9cb9-d89b5e78c21b",
       userId: "f5e3b6a2-96b1-4a03-9cb9-d89b4e78c21a",
       name: "Famille Dubois",
       logs: [
         {
-          startHour: new Date("2024-10-01T09:00:00Z"),
-          endHour: new Date("2024-10-01T17:30:00Z"),
+          date: new Date("2024-09-15"),
+          startHour: "11:15",
+          endHour: "15:30",
           signature: "PaulineD",
         },
         {
-          startHour: new Date("2024-10-05T14:00:00Z"),
-          endHour: new Date("2024-10-05T16:00:00Z"),
-          signature: "Admin",
-        },
-      ] as FamilyLogs[],
-    },
-    {
-      familyId: "fml_4a3b1d9c_02",
-      userId: "user_p4_7720",
-      name: "Famille Test",
-      logs: [
-        {
-          startHour: new Date("2024-10-01T09:00:00Z"),
-          endHour: new Date("2024-10-01T17:30:00Z"),
+          date: new Date("2025-10-31"),
+          startHour: "9:15",
+          endHour: "16:30",
           signature: "PaulineD",
-        },
-        {
-          startHour: new Date("2024-10-05T14:00:00Z"),
-          endHour: new Date("2024-10-05T16:00:00Z"),
-          signature: "Admin",
-        },
-      ] as FamilyLogs[],
-    },
-
-    // --- Famille 2 : Sans logs (nouvelle famille) ---
-    {
-      familyId: "fml_b8e2f0a1_02",
-      userId: "user_a9_3151",
-      name: "Famille Martin",
-      logs: [] as FamilyLogs[],
-    },
-
-    // --- Famille 3 : Avec un seul log récent ---
-    {
-      familyId: "fml_6c7d5e4f_03",
-      userId: "user_z1_9088",
-      name: "Famille LeBlanc",
-      logs: [
-        {
-          startHour: new Date("2024-10-23T10:30:00Z"),
-          endHour: new Date("2024-10-23T18:00:00Z"),
-          signature: "JeanneL",
         },
       ] as FamilyLogs[],
     },
   ],
 };
-
-// type AddFamilyPayload = {
-//   name: string;
-//   familyId: string;
-//   userId: string;
-// };
 
 export const familySlice = createSlice({
   name: "family",
@@ -93,6 +49,17 @@ export const familySlice = createSlice({
     },
     addFamilySuccess: (state, action: PayloadAction<string>) => {
       console.log("Family added with ID:", action.payload);
+    },
+    updateFamily: (
+      state,
+      action: PayloadAction<{ familyId: string; newName: string }>
+    ) => {
+      const familyToUpdate = state.value.find(
+        (family) => family.familyId === action.payload.familyId
+      );
+      if (familyToUpdate) {
+        familyToUpdate.name = action.payload.newName;
+      }
     },
     removeFamily: (state, action: PayloadAction<string>) => {
       state.value = state.value.filter(
@@ -121,8 +88,13 @@ export const familySlice = createSlice({
   },
 });
 
-export const { addFamily, addFamilySuccess, removeFamily, addLogs } =
-  familySlice.actions;
+export const {
+  addFamily,
+  addFamilySuccess,
+  updateFamily,
+  removeFamily,
+  addLogs,
+} = familySlice.actions;
 export const selectAllFamily = (state: RootState) => state.family;
 export const selectFamilyId = (state: RootState, familyId: string) => familyId;
 
