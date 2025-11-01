@@ -35,6 +35,13 @@ export function DetailTable(props: { logs: FamilyLogs[] }) {
       field: "signature",
       headerName: "Signature",
       flex: 1,
+      renderCell: (params: GridRenderCellParams) => (
+        <img
+          src={params.row.signature}
+          alt="Signature"
+          style={{ maxHeight: "100%", maxWidth: "200px" }}
+        />
+      ),
     },
   ];
 
@@ -42,6 +49,10 @@ export function DetailTable(props: { logs: FamilyLogs[] }) {
     id: index,
     ...log,
   }));
+
+  const handleCellClick = (params: GridRenderCellParams) => {
+    console.log("Cell clicked:", params.field);
+  };
 
   return (
     <Paper sx={{ width: "100%" }}>
@@ -56,6 +67,7 @@ export function DetailTable(props: { logs: FamilyLogs[] }) {
         sx={{
           border: 0,
         }}
+        onCellClick={handleCellClick}
       />
     </Paper>
   );

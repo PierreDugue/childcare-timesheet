@@ -15,8 +15,9 @@ export type Family = {
 
 export type FamilyLogs = {
   date: Date;
-  startHour: string | null;
-  endHour: string | null;
+  startHour: string;
+  endHour: string;
+  comment: string;
   signature: string;
 };
 
@@ -24,6 +25,7 @@ export type LogFormInputs = {
   family: string;
   logs: FamilyLogs;
   comment: string;
+  signature: string;
 };
 
 export type FamilyFormInputs = {

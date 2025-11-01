@@ -83,6 +83,7 @@ export const familySlice = createSlice({
       } else {
         existingLog.startHour = log.startHour;
         existingLog.endHour = log.endHour;
+        existingLog.signature = log.signature;
       }
     },
   },
