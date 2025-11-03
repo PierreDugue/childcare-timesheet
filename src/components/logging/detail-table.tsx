@@ -10,6 +10,7 @@ export type FamilyLogs = {
   startHour?: string;
   endHour?: string;
   signature: string;
+  comment?: string;
 };
 
 export function DetailTable(props: { logs: FamilyLogs[] }) {
@@ -29,6 +30,11 @@ export function DetailTable(props: { logs: FamilyLogs[] }) {
     {
       field: "endHour",
       headerName: "End Hour",
+      flex: 1,
+    },
+    {
+      field: "comment",
+      headerName: "Comment",
       flex: 1,
     },
     {

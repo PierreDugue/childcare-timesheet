@@ -9,7 +9,7 @@ export interface UserState {
 const initialState: UserState = {
   currentUser: {
     userId: "f5e3b6a2-96b1-4a03-9cb9-d89b4e78c21a",
-    userName: "Pauline Dugué",
+    userName: "Pierre Dugué",
     userEmailAddress: "",
     token: "",
     config: [],

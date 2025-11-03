@@ -25,8 +25,15 @@ const initialState: FamilyState = {
         },
         {
           date: new Date("2025-10-31"),
-          startHour: "9:15",
+          startHour: "09:15",
           endHour: "16:30",
+          signature: "PaulineD",
+        },
+        {
+          date: new Date("2025-11-03"),
+          startHour: "09:15",
+          endHour: "16:30",
+          comment: "Child was a bit sick",
           signature: "PaulineD",
         },
       ] as FamilyLogs[],
@@ -77,6 +84,8 @@ export const familySlice = createSlice({
           new Date(familyLog.date).toString() === new Date(log.date).toString()
       );
 
+      console.log('existingLogs', existingLog, log);
+
       if (!family) return;
       if (!existingLog) {
         family?.logs.push(log);
@@ -84,6 +93,7 @@ export const familySlice = createSlice({
         existingLog.startHour = log.startHour;
         existingLog.endHour = log.endHour;
         existingLog.signature = log.signature;
+        existingLog.comment = log.comment;
       }
     },
   },

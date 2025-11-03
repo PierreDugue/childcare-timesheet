@@ -1,14 +1,37 @@
-import { useEffect, useRef } from "react";
+import { Box, Button } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import type { LogFormInputs } from "../../models/models";
-import { addLogs, selectAllFamily } from "../../slices/familySlice";
 import SignatureCanvas from "react-signature-canvas";
-import { Box, Button } from "@mui/material";
+import type { LogFormInputs } from "../../models/models";
+import {
+  addLogs,
+  selectAllFamily,
+  selectFamilyById,
+} from "../../slices/familySlice";
+import type { RootState } from "../../app/store";
+
+// const newLogSchema = z.object({
+//   date: z.string().nonempty("Date is required"),
+// })
 
 export function TimeLogForm() {
-  const { register, handleSubmit, setValue, control } =
-    useForm<LogFormInputs>();
+  const [selectedFamilyId, setSelectedFamilyId] = useState<string>("");
+  // const [selectedDate, setSelectedFDate] = useState<Date>(new Date());
+  const currentLog = useSelector((state: RootState) =>
+    selectFamilyById(state, selectedFamilyId)
+  );
+
+  const { register, handleSubmit, setValue, watch, control } =
+    useForm<LogFormInputs>({
+      // resolver: zodResolver(newLogSchema),
+      //     values: {
+      //   ...fakeValues,
+      // },
+    });
+  const watchFamilyId = watch("family", "");
+  const watchDate = watch("logs.date", new Date());
+
   const signature = useRef(null);
   const handleClearSignature = () => {
     if (signature.current) signature.current.clear();
@@ -24,8 +47,8 @@ export function TimeLogForm() {
           date: new Date(data.logs.date),
           startHour: data.logs.startHour,
           endHour: data.logs.endHour,
-          comment: data.comment ?? "",
-          signature: data.signature,
+          comment: data.logs.comment,
+          signature: data.logs.signature,
         },
       })
     );
@@ -34,8 +57,45 @@ export function TimeLogForm() {
   const families = useSelector(selectAllFamily);
 
   useEffect(() => {
-    console.log("all", families);
-  }, []);
+    setSelectedFamilyId(watchFamilyId);
+
+    if (selectedFamilyId) {
+      const foundLog = currentLog?.logs.find(
+        (log) =>
+          new Date(log.date).toDateString() ===
+          new Date(watchDate).toDateString()
+      );
+
+      if (foundLog) {
+        setValue("logs.startHour", foundLog.startHour);
+        setValue("logs.endHour", foundLog.endHour);
+        setValue("logs.comment", foundLog.comment);
+        setValue("logs.signature", foundLog.signature);
+      } else {
+        setValue("logs.startHour", "");
+        setValue("logs.endHour", "");
+        setValue("logs.comment", "");
+        setValue("logs.signature", "");
+      }
+
+      if (foundLog?.signature && signature.current) {
+        try {
+          signature.current.fromDataURL(foundLog.signature);
+        } catch (error) {
+          console.warn("Failed to load signature:", error);
+        }
+      } else {
+        handleClearSignature();
+      }
+    }
+  }, [
+    watchFamilyId,
+    watchDate,
+    selectedFamilyId,
+    currentLog,
+    setValue,
+    handleClearSignature,
+  ]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -46,13 +106,17 @@ export function TimeLogForm() {
           </option>
         ))}
       </select>
-      <input type="date" {...register("logs.date")} />
+      <input
+        type="date"
+        defaultValue={new Date().toISOString().substring(0, 10)}
+        {...register("logs.date")}
+      />
       <input type="time" {...register("logs.startHour")} />
       <input type="time" {...register("logs.endHour")} />
-      <input type="text" {...register("comment")} />
+      <input type="text" {...register("logs.comment")} />
       <Controller
         control={control}
-        name="signature"
+        name="logs.signature"
         render={({ field }) => (
           <Box>
             <SignatureCanvas
