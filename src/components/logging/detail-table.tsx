@@ -1,9 +1,18 @@
-import { Paper } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Paper,
+} from "@mui/material";
 import {
   DataGrid,
   type GridColDef,
   type GridRenderCellParams,
 } from "@mui/x-data-grid";
+import { useRef, useState } from "react";
+import SignatureCanvas from "react-signature-canvas";
 
 export type FamilyLogs = {
   date: Date;
@@ -14,6 +23,8 @@ export type FamilyLogs = {
 };
 
 export function DetailTable(props: { logs: FamilyLogs[] }) {
+  const [open, setOpen] = useState(false);
+  const signatureToShow = useRef(null);
   const columns: GridColDef[] = [
     {
       field: "date",
@@ -57,24 +68,54 @@ export function DetailTable(props: { logs: FamilyLogs[] }) {
   }));
 
   const handleCellClick = (params: GridRenderCellParams) => {
-    console.log("Cell clicked:", params.field);
+    console.log("Cell clicked:", params);
+    if (params.field === "signature" && params.row.signature) {
+      signatureToShow.current?.fromDataURL(params.row.signature);
+      setOpen(true);
+    }
   };
 
+  const onClose = () => {
+    setOpen(false);
+  }
+
   return (
-    <Paper sx={{ width: "100%" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSizeOptions={[5, 10, 20, 50]}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 20, page: 0 } },
-        }}
-        disableRowSelectionOnClick
-        sx={{
-          border: 0,
-        }}
-        onCellClick={handleCellClick}
-      />
-    </Paper>
+    <>
+      <Paper sx={{ width: "100%" }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSizeOptions={[5, 10, 20, 50]}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 20, page: 0 } },
+          }}
+          disableRowSelectionOnClick
+          sx={{
+            border: 0,
+          }}
+          onCellClick={handleCellClick}
+        />
+      </Paper>
+
+      <Dialog open={open} onClose={onClose}>
+        <DialogTitle>Signature</DialogTitle>
+        <DialogContent>
+          <SignatureCanvas
+            ref={signatureToShow}
+            penColor="black"
+            backgroundColor="#050404ff"
+            canvasProps={{
+              width: 400,
+              height: 200,
+              style: { border: "1px solid #ccc", borderRadius: "8px" },
+            }}
+
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onClose}>Close</Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
