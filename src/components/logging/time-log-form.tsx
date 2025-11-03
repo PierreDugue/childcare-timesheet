@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Tooltip } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,17 +15,27 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export function TimeLogForm() {
   const [selectedFamilyId, setSelectedFamilyId] = useState<string>("");
   // const [selectedDate, setSelectedFDate] = useState<Date>(new Date());
-  const currentLog = useSelector((state: RootState) =>
-    selectFamilyById(state, selectedFamilyId)
-  );
+  const currentFamily = useSelector((state: RootState) => {
+    console.log("selectFamilyById", selectFamilyById(state, selectedFamilyId));
+    return selectFamilyById(state, selectedFamilyId);
+  });
 
-  const { register, handleSubmit, setValue, watch, control } =
-    useForm<LogFormInputs>({
-      resolver: zodResolver(newLogSchema),
-    });
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm<LogFormInputs>({
+    resolver: zodResolver(newLogSchema),
+  });
   const watchFamilyId = watch("family", "");
   const watchDate = watch("logs.date", "");
-
+  const currentLog = currentFamily?.logs.find(
+    (log) =>
+      new Date(log.date).toDateString() === new Date(watchDate).toDateString()
+  );
   const signature = useRef(null);
   const handleClearSignature = () => {
     if (signature.current) signature.current.clear();
@@ -54,19 +64,13 @@ export function TimeLogForm() {
     setSelectedFamilyId(watchFamilyId);
 
     if (selectedFamilyId) {
-      const foundLog = currentLog?.logs.find(
-        (log) =>
-          new Date(log.date).toDateString() ===
-          new Date(watchDate).toDateString()
-      );
-
-      if (foundLog) {
-        setValue("logs.startHour", foundLog.startHour);
-        setValue("logs.endHour", foundLog.endHour);
-        setValue("logs.comment", foundLog.comment);
-        setValue("logs.signature", foundLog.signature);
+      if (currentLog) {
+        setValue("logs.startHour", currentLog.startHour);
+        setValue("logs.endHour", currentLog.endHour);
+        setValue("logs.comment", currentLog.comment);
+        setValue("logs.signature", currentLog.signature);
         try {
-          signature.current?.fromDataURL(foundLog.signature);
+          signature.current?.fromDataURL(currentLog.signature);
         } catch (error) {
           console.warn("Failed to load signature:", error);
         }
@@ -94,6 +98,7 @@ export function TimeLogForm() {
         defaultValue={new Date().toISOString().substring(0, 10)}
         {...register("logs.date")}
       />
+      {errors.logs?.date && <span>{errors.logs.date.message}</span>}
       <input type="time" {...register("logs.startHour")} />
       <input type="time" {...register("logs.endHour")} />
       <input type="text" {...register("logs.comment")} />
@@ -129,7 +134,20 @@ export function TimeLogForm() {
           </Box>
         )}
       />
-      <button type="submit">Save</button>
+      <Tooltip
+        title={
+          currentLog && currentLog.signature !== ""
+            ? "You cannot update logs once it is signed"
+            : ""
+        }
+      >
+        <button
+          type="submit"
+          disabled={currentLog && currentLog.signature !== ""}
+        >
+          Save
+        </button>
+      </Tooltip>
       <button type="reset" value="Reset">
         Reset
       </button>

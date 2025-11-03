@@ -31,7 +31,7 @@ export type FamilyLogs = {
 export const newLogSchema = z.object({
   family: z.string().nonempty("Family is required"),
   logs: z.object({
-    date: z.iso.date(),
+    date: z.string().nonempty("Date is required"),
     startHour: z.string().optional() || z.undefined(),
     endHour: z.string().optional() || z.undefined(),
     comment: z.string().optional() || z.undefined(),
