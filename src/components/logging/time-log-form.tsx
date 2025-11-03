@@ -3,17 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import SignatureCanvas from "react-signature-canvas";
-import type { LogFormInputs } from "../../models/models";
+import { newLogSchema, type LogFormInputs } from "../../models/models";
 import {
   addLogs,
   selectAllFamily,
   selectFamilyById,
 } from "../../slices/familySlice";
 import type { RootState } from "../../app/store";
-
-// const newLogSchema = z.object({
-//   date: z.string().nonempty("Date is required"),
-// })
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export function TimeLogForm() {
   const [selectedFamilyId, setSelectedFamilyId] = useState<string>("");
@@ -24,18 +21,15 @@ export function TimeLogForm() {
 
   const { register, handleSubmit, setValue, watch, control } =
     useForm<LogFormInputs>({
-      // resolver: zodResolver(newLogSchema),
-      //     values: {
-      //   ...fakeValues,
-      // },
+      resolver: zodResolver(newLogSchema),
     });
   const watchFamilyId = watch("family", "");
-  const watchDate = watch("logs.date", new Date());
+  const watchDate = watch("logs.date", "");
 
   const signature = useRef(null);
   const handleClearSignature = () => {
     if (signature.current) signature.current.clear();
-    setValue("signature", "");
+    setValue("logs.signature", "");
   };
   const dispatch = useDispatch();
   const onSubmit: SubmitHandler<LogFormInputs> = (data) => {
@@ -45,10 +39,10 @@ export function TimeLogForm() {
         familyId: data.family,
         log: {
           date: new Date(data.logs.date),
-          startHour: data.logs.startHour,
-          endHour: data.logs.endHour,
-          comment: data.logs.comment,
-          signature: data.logs.signature,
+          startHour: data.logs.startHour || "",
+          endHour: data.logs.endHour || "",
+          comment: data.logs.comment || "",
+          signature: data.logs.signature || "",
         },
       })
     );
@@ -71,31 +65,20 @@ export function TimeLogForm() {
         setValue("logs.endHour", foundLog.endHour);
         setValue("logs.comment", foundLog.comment);
         setValue("logs.signature", foundLog.signature);
+        try {
+          signature.current?.fromDataURL(foundLog.signature);
+        } catch (error) {
+          console.warn("Failed to load signature:", error);
+        }
       } else {
         setValue("logs.startHour", "");
         setValue("logs.endHour", "");
         setValue("logs.comment", "");
         setValue("logs.signature", "");
-      }
-
-      if (foundLog?.signature && signature.current) {
-        try {
-          signature.current.fromDataURL(foundLog.signature);
-        } catch (error) {
-          console.warn("Failed to load signature:", error);
-        }
-      } else {
-        handleClearSignature();
+        signature.current?.clear();
       }
     }
-  }, [
-    watchFamilyId,
-    watchDate,
-    selectedFamilyId,
-    currentLog,
-    setValue,
-    handleClearSignature,
-  ]);
+  }, [watchFamilyId, watchDate, selectedFamilyId, currentLog, setValue]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

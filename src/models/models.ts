@@ -1,3 +1,5 @@
+import z from "zod";
+
 export type User = {
   userId: string;
   userName: string;
@@ -21,12 +23,24 @@ export type FamilyLogs = {
   signature: string;
 };
 
-export type LogFormInputs = {
-  family: string;
-  logs: FamilyLogs;
-  comment: string;
-  signature: string;
-};
+// export type LogFormInputs = {
+//   family: string;
+//   logs: FamilyLogs;
+// };
+
+export const newLogSchema = z.object({
+  family: z.string().nonempty("Family is required"),
+  logs: z.object({
+    date: z.iso.date(),
+    startHour: z.string().optional() || z.undefined(),
+    endHour: z.string().optional() || z.undefined(),
+    comment: z.string().optional() || z.undefined(),
+    signature: z.string().optional() || z.undefined(),
+  }),
+});
+
+export type LogFormInputs = z.infer<typeof newLogSchema>;
+export type LogFormOutputs = z.infer<typeof newLogSchema>;
 
 export type FamilyFormInputs = {
   familyId: string;
