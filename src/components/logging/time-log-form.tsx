@@ -27,8 +27,6 @@ import styles from "./TimeLogForm.module.scss";
 
 export function TimeLogForm() {
   const [selectedFamilyId, setSelectedFamilyId] = useState<string>("");
-  const [currentTime, setCurrentTime] = useState<string>("");
-  // const [selectedDate, setSelectedFDate] = useState<Date>(new Date());
   const currentFamily = useSelector((state: RootState) => {
     console.log("selectFamilyById", selectFamilyById(state, selectedFamilyId));
     return selectFamilyById(state, selectedFamilyId);
@@ -57,7 +55,6 @@ export function TimeLogForm() {
   };
   const dispatch = useDispatch();
   const onSubmit: SubmitHandler<LogFormInputs> = (data) => {
-    console.log("Submitting log data:", data);
     dispatch(
       addLogs({
         familyId: data.family,
@@ -80,7 +77,6 @@ export function TimeLogForm() {
     const minutes = now.getMinutes().toString().padStart(2, "0");
     const formatted = `${hours}:${minutes}`;
 
-    setCurrentTime(formatted);
     setValue(field, formatted);
   };
 
