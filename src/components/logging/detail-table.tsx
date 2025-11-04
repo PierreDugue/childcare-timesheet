@@ -11,8 +11,7 @@ import {
   type GridColDef,
   type GridRenderCellParams,
 } from "@mui/x-data-grid";
-import { useRef, useState } from "react";
-import SignatureCanvas from "react-signature-canvas";
+import { useState } from "react";
 
 export type FamilyLogs = {
   date: Date;
@@ -24,7 +23,7 @@ export type FamilyLogs = {
 
 export function DetailTable(props: { logs: FamilyLogs[] }) {
   const [open, setOpen] = useState(false);
-  const signatureToShow = useRef(null);
+  const [signatureToShow, setSignatureToShow] = useState<string>("null");
   const columns: GridColDef[] = [
     {
       field: "date",
@@ -52,13 +51,17 @@ export function DetailTable(props: { logs: FamilyLogs[] }) {
       field: "signature",
       headerName: "Signature",
       flex: 1,
-      renderCell: (params: GridRenderCellParams) => (
-        <img
-          src={params.row.signature}
-          alt="Signature"
-          style={{ maxHeight: "100%", maxWidth: "200px" }}
-        />
-      ),
+      renderCell: (params: GridRenderCellParams) => {
+        if (params.row.signature !== "") {
+          return (
+            <img
+              src={params.row.signature}
+              alt="Signature"
+              style={{ maxHeight: "100%", maxWidth: "200px" }}
+            />
+          );
+        }
+      },
     },
   ];
 
@@ -68,16 +71,15 @@ export function DetailTable(props: { logs: FamilyLogs[] }) {
   }));
 
   const handleCellClick = (params: GridRenderCellParams) => {
-    console.log("Cell clicked:", params);
     if (params.field === "signature" && params.row.signature) {
-      signatureToShow.current?.fromDataURL(params.row.signature);
+      setSignatureToShow(params.row.signature);
       setOpen(true);
     }
   };
 
   const onClose = () => {
     setOpen(false);
-  }
+  };
 
   return (
     <>
@@ -100,16 +102,10 @@ export function DetailTable(props: { logs: FamilyLogs[] }) {
       <Dialog open={open} onClose={onClose}>
         <DialogTitle>Signature</DialogTitle>
         <DialogContent>
-          <SignatureCanvas
-            ref={signatureToShow}
-            penColor="black"
-            backgroundColor="#050404ff"
-            canvasProps={{
-              width: 400,
-              height: 200,
-              style: { border: "1px solid #ccc", borderRadius: "8px" },
-            }}
-
+          <img
+            src={signatureToShow}
+            alt="Signature"
+            style={{ maxHeight: "400px", maxWidth: "400px" }}
           />
         </DialogContent>
         <DialogActions>

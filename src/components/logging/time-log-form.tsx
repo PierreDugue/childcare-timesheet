@@ -1,4 +1,16 @@
-import { Box, Button, Tooltip } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,9 +23,11 @@ import {
 } from "../../slices/familySlice";
 import type { RootState } from "../../app/store";
 import { zodResolver } from "@hookform/resolvers/zod";
+import styles from "./TimeLogForm.module.scss";
 
 export function TimeLogForm() {
   const [selectedFamilyId, setSelectedFamilyId] = useState<string>("");
+  const [currentTime, setCurrentTime] = useState<string>("");
   // const [selectedDate, setSelectedFDate] = useState<Date>(new Date());
   const currentFamily = useSelector((state: RootState) => {
     console.log("selectFamilyById", selectFamilyById(state, selectedFamilyId));
@@ -58,6 +72,18 @@ export function TimeLogForm() {
     );
   };
 
+  const handleSetCurrentTimeClick = (
+    field: "logs.startHour" | "logs.endHour"
+  ) => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const formatted = `${hours}:${minutes}`;
+
+    setCurrentTime(formatted);
+    setValue(field, formatted);
+  };
+
   const families = useSelector(selectAllFamily);
 
   useEffect(() => {
@@ -85,72 +111,173 @@ export function TimeLogForm() {
   }, [watchFamilyId, watchDate, selectedFamilyId, currentLog, setValue]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <select {...register("family")}>
-        {families.value.map((family) => (
-          <option key={family.familyId} value={family.familyId}>
-            {family.name}
-          </option>
-        ))}
-      </select>
-      <input
-        type="date"
-        defaultValue={new Date().toISOString().substring(0, 10)}
-        {...register("logs.date")}
-      />
-      {errors.logs?.date && <span>{errors.logs.date.message}</span>}
-      <input type="time" {...register("logs.startHour")} />
-      <input type="time" {...register("logs.endHour")} />
-      <input type="text" {...register("logs.comment")} />
-      <Controller
-        control={control}
-        name="logs.signature"
-        render={({ field }) => (
-          <Box>
-            <SignatureCanvas
-              ref={signature}
-              penColor="black"
-              backgroundColor="#f5f5f5"
-              canvasProps={{
-                width: 400,
-                height: 200,
-                style: { border: "1px solid #ccc", borderRadius: "8px" },
-              }}
-              onEnd={() => {
-                const dataUrl = signature.current?.toDataURL() || "";
-                field.onChange(dataUrl);
-              }}
+    <Paper
+      elevation={4}
+      className={`mx-auto max-w-xl p-6 rounded-2xl ${styles.formContainer}`}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 3,
+        backgroundColor: "white",
+        border: "1px solid #e5e7eb",
+      }}
+    >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Typography variant="h5" fontWeight={600}>
+          Family Time Log
+        </Typography>
+
+        {/* FAMILY SELECT */}
+        <FormControl fullWidth>
+          <InputLabel>Select Family</InputLabel>
+          <Select label="Select Family" {...register("family")} defaultValue="">
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+
+            {families.value.map((family) => (
+              <MenuItem key={family.familyId} value={family.familyId}>
+                {family.name}
+              </MenuItem>
+            ))}
+          </Select>
+          {errors.family && (
+            <Typography variant="caption" color="error">
+              {errors.family.message}
+            </Typography>
+          )}
+        </FormControl>
+
+        {/* DATE */}
+        <TextField
+          type="date"
+          label="Date"
+          slotProps={{ inputLabel: { shrink: true } }}
+          defaultValue={new Date().toISOString().substring(0, 10)}
+          {...register("logs.date")}
+          error={!!errors.logs?.date}
+          helperText={errors.logs?.date?.message}
+        />
+
+        {/* HOURS GRID */}
+        <Grid container spacing={2}>
+          <Grid>
+            <TextField
+              type="time"
+              label="Start Hour"
+              slotProps={{ inputLabel: { shrink: true } }}
+              {...register("logs.startHour")}
             />
-            <Box sx={{ mt: 1 }}>
+
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => handleSetCurrentTimeClick("logs.startHour")}
+              sx={{ mt: 1 }}
+            >
+              Now
+            </Button>
+          </Grid>
+
+          <Grid>
+            <TextField
+              type="time"
+              label="End Hour"
+              slotProps={{ inputLabel: { shrink: true } }}
+              {...register("logs.endHour")}
+            />
+
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => handleSetCurrentTimeClick("logs.endHour")}
+              sx={{ mt: 1 }}
+            >
+              Now
+            </Button>
+          </Grid>
+        </Grid>
+
+        {/* COMMENT */}
+        <TextField
+          label="Comment"
+          placeholder="Add your comment..."
+          multiline
+          rows={2}
+          fullWidth
+          slotProps={{ inputLabel: { shrink: true } }}
+          {...register("logs.comment")}
+        />
+
+        {/* SIGNATURE */}
+        <Box>
+          <Typography variant="subtitle2" mb={1}>
+            Signature
+          </Typography>
+
+          <Controller
+            control={control}
+            name="logs.signature"
+            render={({ field }) => (
+              <Box>
+                <SignatureCanvas
+                  ref={signature}
+                  penColor="black"
+                  backgroundColor="#fafafa"
+                  canvasProps={{
+                    width: 400,
+                    height: 200,
+                    style: {
+                      border: "1px solid #ddd",
+                      borderRadius: "0.5rem",
+                    },
+                  }}
+                  onEnd={() => {
+                    const dataUrl = signature.current?.toDataURL() || "";
+                    field.onChange(dataUrl);
+                  }}
+                />
+
+                <Button
+                  variant="outlined"
+                  color="error"
+                  size="small"
+                  onClick={handleClearSignature}
+                  sx={{ mt: 1 }}
+                >
+                  Clear
+                </Button>
+              </Box>
+            )}
+          />
+        </Box>
+
+        {/* BUTTONS */}
+        <Box display="flex" justifyContent="flex-end" gap={2} mt={2}>
+          <Tooltip
+            title={
+              currentLog && currentLog.signature !== ""
+                ? "You cannot update logs once it is signed"
+                : ""
+            }
+          >
+            <span>
               <Button
-                variant="outlined"
-                color="error"
-                size="small"
-                onClick={handleClearSignature}
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={currentLog && currentLog.signature !== ""}
               >
-                Clear
+                Save
               </Button>
-            </Box>
-          </Box>
-        )}
-      />
-      <Tooltip
-        title={
-          currentLog && currentLog.signature !== ""
-            ? "You cannot update logs once it is signed"
-            : ""
-        }
-      >
-        <button
-          type="submit"
-          disabled={currentLog && currentLog.signature !== ""}
-        >
-          Save
-        </button>
-      </Tooltip>
-      <button type="reset" value="Reset">
-        Reset
-      </button>
-    </form>
+            </span>
+          </Tooltip>
+
+          <Button type="reset" variant="outlined" color="secondary">
+            Reset
+          </Button>
+        </Box>
+      </form>
+    </Paper>
   );
 }
