@@ -11,51 +11,26 @@ export interface FamilyState {
 }
 
 const initialState: FamilyState = {
-  value: [
-    {
-      familyId: "f5e3b6a2-95b1-4a13-9cb9-d89b5e78c21b",
-      userId: "f5e3b6a2-96b1-4a03-9cb9-d89b4e78c21a",
-      name: "Famille Dubois",
-      logs: [
-        {
-          date: new Date("2024-09-15"),
-          startHour: "11:15",
-          endHour: "15:30",
-          signature: "PaulineD",
-        },
-        {
-          date: new Date("2025-10-31"),
-          startHour: "09:15",
-          endHour: "16:30",
-          signature: "PaulineD",
-        },
-        {
-          date: new Date("2025-11-03"),
-          startHour: "09:15",
-          endHour: "16:30",
-          comment: "Child was a bit sick",
-          signature: "PaulineD",
-        },
-      ] as FamilyLogs[],
-    },
-  ],
+  value: [],
 };
 
 export const familySlice = createSlice({
   name: "family",
   initialState,
   reducers: {
-    addFamily: (state, action: PayloadAction<Family>) => {
-      const newfamily: Family = {
-        familyId: action.payload.familyId,
-        userId: action.payload.userId,
-        name: action.payload.name,
-        logs: action.payload.logs,
-      };
-      state.value.push(newfamily);
+    fetchFamilies: () => { },
+    fecthAllFamiliesSuccess: (state, action: PayloadAction<Family[]>) => {
+      state.value = action.payload
     },
-    addFamilySuccess: (state, action: PayloadAction<string>) => {
+    fecthAllFamiliesError: () => {},
+    addFamily: () => {
+    },
+    addFamilySuccess: (state, action: PayloadAction<Family>) => {
       console.log("Family added with ID:", action.payload);
+      state.value.push(action.payload);
+    },
+    addFamilyError: (state, action: PayloadAction<string>) => {
+      console.log(action.payload)
     },
     updateFamily: (
       state,
@@ -101,7 +76,11 @@ export const familySlice = createSlice({
 
 export const {
   addFamily,
+  fetchFamilies,
+  fecthAllFamiliesSuccess,
+  fecthAllFamiliesError,
   addFamilySuccess,
+  addFamilyError,
   updateFamily,
   removeFamily,
   addLogs,
@@ -124,13 +103,13 @@ export const selectAllFamilyByUserId = createSelector(
   }
 );
 
-export const selectAllLogsByFamilyId = createSelector(
-  [selectAllFamilyByUserId, (_: RootState, familyId: string) => familyId],
-  (families, familyId) => {
-    return families.family?.value?.filter(
-      (family) => family.userId === familyId
-    );
-  }
-);
+// export const selectAllLogsByFamilyId = createSelector(
+//   [selectAllFamilyByUserId, (_: RootState, familyId: string) => familyId],
+//   (families, familyId) => {
+//     return families.family?.value?.filter(
+//       (family) => family.userId === familyId
+//     );
+//   }
+// );
 
 export default familySlice.reducer;

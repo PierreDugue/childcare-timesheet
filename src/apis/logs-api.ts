@@ -20,15 +20,23 @@ import axios from "axios";
 //   return { saveFamily, resOk, error };
 // }
 
+const FAMILY_PATH = 'http://127.0.0.1:8000/api/families/'
+
 export async function saveFamily(data: Family) {
   try {
     console.log("Saving family", data);
-    // Simulate API call
-    // await axios.post("/family", data);
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-    return axios.post("https://jsonplaceholder.typicode.com/posts", data);
+    return axios.post(FAMILY_PATH, data);
   } catch (err) {
     console.error("Failed to save family", err);
+    throw err;
+  }
+}
+
+export async function fecthAllFamilies() {
+  try {
+    return axios.get(FAMILY_PATH)
+  } catch (err) {
+    console.error("Failed to fetch families", err);
     throw err;
   }
 }
