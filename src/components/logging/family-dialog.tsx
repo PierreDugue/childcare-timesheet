@@ -1,7 +1,6 @@
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
 import type { RootState } from "../../app/store";
 import type { FamilyFormInputs } from "../../models/models";
 import {
@@ -39,14 +38,15 @@ export function FamilyDialog(props: {
       return;
     }
 
-    dispatch(
-      addFamily({
-        name: data.name,
-        familyId: uuidv4(),
-        userId: currentUser?.userId || "",
-        logs: [],
-      })
-    );
+    if (currentUser?.userId)
+      dispatch(
+        addFamily({
+          name: data.name,
+          familyId: "",
+          userId: currentUser?.userId,
+          logs: [],
+        })
+      );
     reset({ name: "" });
     handleClose();
   };

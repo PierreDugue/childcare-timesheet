@@ -22,12 +22,12 @@ export const familySlice = createSlice({
     fecthAllFamiliesSuccess: (state, action: PayloadAction<Family[]>) => {
       state.value = action.payload
     },
-    fecthAllFamiliesError: () => {},
-    addFamily: () => {
+    fecthAllFamiliesError: () => { },
+    addFamily: (state, action: PayloadAction<Family>) => {
     },
     addFamilySuccess: (state, action: PayloadAction<Family>) => {
       console.log("Family added with ID:", action.payload);
-      state.value.push(action.payload);
+      // state.value.push(action.payload);
     },
     addFamilyError: (state, action: PayloadAction<string>) => {
       console.log(action.payload)
@@ -36,17 +36,28 @@ export const familySlice = createSlice({
       state,
       action: PayloadAction<{ familyId: string; newName: string }>
     ) => {
-      const familyToUpdate = state.value.find(
-        (family) => family.familyId === action.payload.familyId
-      );
-      if (familyToUpdate) {
-        familyToUpdate.name = action.payload.newName;
-      }
+
+    },
+    updateFamilySuccess: (
+      state,
+      action: PayloadAction<{ familyId: string; newName: string }>
+    ) => {
+
+    },
+    updateFamilyError: (
+      state,
+      action: PayloadAction<{ familyId: string; newName: string }>
+    ) => {
+
     },
     removeFamily: (state, action: PayloadAction<string>) => {
-      state.value = state.value.filter(
-        (family) => family.familyId !== action.payload
-      );
+      console.log('Delete Family with ID:', action.payload)
+    },
+    removeFamilySuccess: (state, action) => {
+       console.log("Family with ID remove success:", action.payload);
+    },
+    removeFamilyError: (state, action: PayloadAction<string>) => {
+      console.log(action.payload)
     },
     addLogs: (
       state,
@@ -58,8 +69,6 @@ export const familySlice = createSlice({
         (familyLog) =>
           new Date(familyLog.date).toString() === new Date(log.date).toString()
       );
-
-      console.log('existingLogs', existingLog, log);
 
       if (!family) return;
       if (!existingLog) {
@@ -82,7 +91,11 @@ export const {
   addFamilySuccess,
   addFamilyError,
   updateFamily,
+  updateFamilySuccess,
+  updateFamilyError,
   removeFamily,
+  removeFamilySuccess,
+  removeFamilyError,
   addLogs,
 } = familySlice.actions;
 export const selectAllFamily = (state: RootState) => state.family;
