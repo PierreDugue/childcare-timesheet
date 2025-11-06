@@ -1,6 +1,6 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
-import { addFamily, addFamilyError, addFamilySuccess, fecthAllFamiliesSuccess, fetchFamilies, removeFamilySuccess, removeFamily, removeFamilyError, updateFamily, updateFamilySuccess, updateFamilyError } from "../slices/familySlice";
-import { fecthAllFamiliesAPI, removeFamilyAPI, saveFamilyAPI, updateFamilyNameAPI } from "../apis/logs-api";
+import { addLogsAPI, fecthAllFamiliesAPI, removeFamilyAPI, saveFamilyAPI, updateFamilyNameAPI } from "../apis/logs-api";
+import { addFamily, addFamilyError, addFamilySuccess, addLogs, addLogsError, addLogsSuccess, fecthAllFamiliesSuccess, fetchFamilies, removeFamily, removeFamilyError, removeFamilySuccess, updateFamily, updateFamilyError, updateFamilySuccess } from "../slices/familySlice";
 
 export const familyListenerMiddleware = createListenerMiddleware();
 
@@ -64,6 +64,21 @@ familyListenerMiddleware.startListening({
       listenerApi.dispatch(removeFamilySuccess(action.payload));
     } else {
       listenerApi.dispatch(removeFamilyError(res?.data.error))
+    }
+  },
+});
+
+familyListenerMiddleware.startListening({
+  actionCreator: addLogs,
+  effect: async (action, listenerApi) => {
+    let res;
+    if (action?.payload) 
+      res = await addLogsAPI(action.payload.family, action.payload.log);
+    listenerApi.cancelActiveListeners();
+    if (res?.status === 204 || res?.status === 200) {
+      listenerApi.dispatch(addLogsSuccess());
+    } else {
+      listenerApi.dispatch(addLogsError())
     }
   },
 });

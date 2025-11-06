@@ -1,4 +1,4 @@
-import type { Family } from "../models/models";
+import type { Family, FamilyLogs } from "../models/models";
 import axios from "axios";
 
 // export function useSaveFamilly() {
@@ -20,7 +20,8 @@ import axios from "axios";
 //   return { saveFamily, resOk, error };
 // }
 
-const FAMILY_PATH = 'http://127.0.0.1:8000/api/families/'
+const FAMILY_PATH = 'http://127.0.0.1:8000/api/families/';
+const LOGS_PATH = 'http://127.0.0.1:8000/api/logs/';
 
 export async function saveFamilyAPI(data: Family) {
   try {
@@ -55,6 +56,15 @@ export async function updateFamilyNameAPI(familyId: string, name: string) {
     return axios.patch(`${FAMILY_PATH}${familyId}/`, { name });
   } catch (err) {
     console.error("Failed to update families", err);
+    throw err;
+  }
+}
+
+export async function addLogsAPI(family: Family, logs: FamilyLogs) {
+  try {
+    return axios.post(`${LOGS_PATH}`, {...family, ...logs });
+  } catch (err) {
+    console.error("Failed to add logs", err);
     throw err;
   }
 }

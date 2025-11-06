@@ -55,19 +55,29 @@ export function TimeLogForm() {
   };
   const dispatch = useDispatch();
   const onSubmit: SubmitHandler<LogFormInputs> = (data) => {
-    dispatch(
-      addLogs({
-        familyId: data.family,
-        log: {
-          date: new Date(data.logs.date),
-          startHour: data.logs.startHour || "",
-          endHour: data.logs.endHour || "",
-          comment: data.logs.comment || "",
-          signature: data.logs.signature || "",
-        },
-      })
+
+    const existingLog = currentFamily?.logs.find(
+      (familyLog) =>
+        new Date(familyLog.date).toString() === new Date(data.logs.date).toString()
     );
-  };
+
+
+    if (existingLog) {
+    } else {
+      dispatch(
+        addLogs({
+          familyId: data.family,
+          log: {
+            date: new Date(data.logs.date),
+            startHour: data.logs.startHour || "",
+            endHour: data.logs.endHour || "",
+            comment: data.logs.comment || "",
+            signature: data.logs.signature || "",
+          },
+        })
+      );
+    };
+  }
 
   const handleSetCurrentTimeClick = (
     field: "logs.startHour" | "logs.endHour"

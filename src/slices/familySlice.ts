@@ -54,32 +54,38 @@ export const familySlice = createSlice({
       console.log('Delete Family with ID:', action.payload)
     },
     removeFamilySuccess: (state, action) => {
-       console.log("Family with ID remove success:", action.payload);
+      console.log("Family with ID remove success:", action.payload);
     },
     removeFamilyError: (state, action: PayloadAction<string>) => {
       console.log(action.payload)
     },
     addLogs: (
       state,
-      action: PayloadAction<{ familyId: string; log: FamilyLogs }>
+      action: PayloadAction<{ family: Family; log: FamilyLogs }>
     ) => {
-      const { familyId, log } = action.payload;
-      const family = state.value.find((f) => f.familyId === familyId);
-      const existingLog = family?.logs.find(
-        (familyLog) =>
-          new Date(familyLog.date).toString() === new Date(log.date).toString()
-      );
+      // const { familyId, log } = action.payload;
+      // const family = state.value.find((f) => f.familyId === familyId);
+      // const existingLog = family?.logs.find(
+      //   (familyLog) =>
+      //     new Date(familyLog.date).toString() === new Date(log.date).toString()
+      // );
 
-      if (!family) return;
-      if (!existingLog) {
-        family?.logs.push(log);
-      } else {
-        existingLog.startHour = log.startHour;
-        existingLog.endHour = log.endHour;
-        existingLog.signature = log.signature;
-        existingLog.comment = log.comment;
-      }
+      // if (!family) return;
+      // if (!existingLog) {
+      //   family?.logs.push(log);
+      // } else {
+      //   existingLog.startHour = log.startHour;
+      //   existingLog.endHour = log.endHour;
+      //   existingLog.signature = log.signature;
+      //   existingLog.comment = log.comment;
+      // }
     },
+    addLogsSuccess: () => {
+
+    },
+    addLogsError: () => {
+
+    }
   },
 });
 
@@ -97,6 +103,8 @@ export const {
   removeFamilySuccess,
   removeFamilyError,
   addLogs,
+  addLogsSuccess,
+  addLogsError
 } = familySlice.actions;
 export const selectAllFamily = (state: RootState) => state.family;
 export const selectFamilyId = (state: RootState, familyId: string) => familyId;
