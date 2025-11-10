@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
   Button,
@@ -15,14 +16,13 @@ import { useEffect, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import SignatureCanvas from "react-signature-canvas";
+import type { RootState } from "../../app/store";
 import { newLogSchema, type LogFormInputs } from "../../models/models";
 import {
   addLogs,
   selectAllFamily,
-  selectFamilyById,
+  selectFamilyById
 } from "../../slices/familySlice";
-import type { RootState } from "../../app/store";
-import { zodResolver } from "@hookform/resolvers/zod";
 import styles from "./TimeLogForm.module.scss";
 
 export function TimeLogForm() {
@@ -56,31 +56,21 @@ export function TimeLogForm() {
   const dispatch = useDispatch();
   const onSubmit: SubmitHandler<LogFormInputs> = (data) => {
 
-    const existingLog = currentFamily?.logs.find(
-      (familyLog) =>
-        new Date(familyLog.date).toString() === new Date(data.logs.date).toString()
-    );
-
     if (!currentFamily)
       return;
 
-    if (existingLog) {
-      // TODO: Dispatch Update log
-    } else {
+    const updatedLog = {
+      family: currentFamily,
+      log: {
+        date: new Date(data.logs.date),
+        startHour: data.logs.startHour || "",
+        endHour: data.logs.endHour || "",
+        comment: data.logs.comment || "",
+        signature: data.logs.signature || "",
+      },
+    }
 
-      dispatch(
-        addLogs({
-          family: currentFamily,
-          log: {
-            date: new Date(data.logs.date),
-            startHour: data.logs.startHour || "",
-            endHour: data.logs.endHour || "",
-            comment: data.logs.comment || "",
-            signature: data.logs.signature || "",
-          },
-        })
-      );
-    };
+    dispatch(addLogs(updatedLog));
   }
 
   const handleSetCurrentTimeClick = (

@@ -57,3 +57,12 @@ export async function addLogsAPI(family: Family, logs: FamilyLogs) {
     throw err;
   }
 }
+
+export async function updateLogAPI(family: Family, logs: FamilyLogs) {
+  try {
+    return axios.patch(`${LOGS_PATH}`, { family: family.familyId, ...logs }, HEADER());
+  } catch (err) {
+    console.error("Failed to add logs", err);
+    throw err;
+  }
+}

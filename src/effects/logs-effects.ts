@@ -1,20 +1,8 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
-import { addLogs, addLogsError, addLogsSuccess } from "../slices/familySlice";
 import { addLogsAPI } from "../apis/logs-api";
+import { addLogs, addLogsError, addLogsSuccess } from "../slices/familySlice";
 
 export const logListenerMiddleware = createListenerMiddleware();
-
-// logListenerMiddleware.startListening({
-//   actionCreator: addLogs,
-//   effect: async (action, listenerApi) => {
-//     console.log('effect', action.payload, listenerApi);
-//     const res = await saveFamily(action.payload);
-//     listenerApi.cancelActiveListeners();
-//     if (res?.status === 201) {
-//       listenerApi.dispatch(addFamilySuccess(action.payload.familyId));
-//     }
-//   },
-// });
 
 logListenerMiddleware.startListening({
   actionCreator: addLogs,
@@ -27,7 +15,7 @@ logListenerMiddleware.startListening({
     if (res?.status === 204 || res?.status === 200) {
       listenerApi.dispatch(addLogsSuccess(res?.data));
     } else {
-      listenerApi.dispatch(addLogsError())
+      listenerApi.dispatch(addLogsError(res?.data.error))
     }
   },
 });

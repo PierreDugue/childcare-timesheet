@@ -20,10 +20,3 @@ authListenerMiddleware.startListening({
         }
     },
 });
-
-// authListenerMiddleware.startListening({
-//     actionCreator: authSuccess,
-//     effect: async (action, listenerApi) => {
-//         listenerApi.dispatch(fetchFamilies())
-//     },
-// });

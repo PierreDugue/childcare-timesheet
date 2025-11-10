@@ -71,28 +71,36 @@ export const familySlice = createSlice({
       action: PayloadAction<{ family: Family; log: FamilyLogs }>
     ) => {
     },
-    addLogsSuccess: (state, { payload: { family, log } }: PayloadAction<{ family: Family; log: FamilyLogs }>) => {
-      const currentFamily = state.value.find((f) => f.familyId === family.familyId);
-      console.log('currentfamily', currentFamily)
+    addLogsSuccess: (state, action: PayloadAction<{ familyId: string } & FamilyLogs>) => {
+      const { familyId, date, startHour, endHour, comment, signature } = action.payload;
+      const currentFamily = state.value.find((f) => {
+        return f.familyId === familyId
+      });
       if (!currentFamily) return;
 
       const existingLog = currentFamily?.logs.find(
         (familyLog) =>
-          new Date(familyLog.date).toString() === new Date(log.date).toString()
+          new Date(familyLog.date).toString() === new Date(date).toString()
       );
 
       if (!existingLog) {
-        currentFamily?.logs.push(log);
+        currentFamily?.logs.push({
+          date,
+          startHour,
+          endHour,
+          comment,
+          signature
+        });
       } else {
-        existingLog.startHour = log.startHour;
-        existingLog.endHour = log.endHour;
-        existingLog.signature = log.signature;
-        existingLog.comment = log.comment;
+        existingLog.startHour = startHour;
+        existingLog.endHour = endHour;
+        existingLog.signature = signature;
+        existingLog.comment = comment;
       }
     },
-    addLogsError: () => {
-
-    }
+    addLogsError: (state, action: PayloadAction<string>) => {
+      console.log(action.payload)
+    },
   },
 });
 
@@ -111,7 +119,7 @@ export const {
   removeFamilyError,
   addLogs,
   addLogsSuccess,
-  addLogsError
+  addLogsError,
 } = familySlice.actions;
 export const selectAllFamily = (state: RootState) => state.family;
 export const selectFamilyId = (state: RootState, familyId: string) => familyId;
