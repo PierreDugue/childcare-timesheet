@@ -61,11 +61,12 @@ export function TimeLogForm() {
         new Date(familyLog.date).toString() === new Date(data.logs.date).toString()
     );
 
+    if (!currentFamily)
+      return;
 
     if (existingLog) {
+      // TODO: Dispatch Update log
     } else {
-      if (!currentFamily)
-        return;
 
       dispatch(
         addLogs({

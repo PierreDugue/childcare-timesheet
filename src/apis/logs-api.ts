@@ -50,8 +50,6 @@ export async function updateFamilyNameAPI(familyId: string, name: string) {
 }
 
 export async function addLogsAPI(family: Family, logs: FamilyLogs) {
-
-
   try {
     return axios.post(`${LOGS_PATH}`, { family: family.familyId, ...logs }, HEADER());
   } catch (err) {

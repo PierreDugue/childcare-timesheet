@@ -11,8 +11,8 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(auth({ username: 'admin', password: 'admin123' }))
-    // dispatch(auth({ username: 'pilou', password: 'pilou' }))
+    // dispatch(auth({ username: 'admin', password: 'admin123' }))
+    dispatch(auth({ username: 'pilou', password: 'pilou' }))
   // }, [])
   }, [])
 

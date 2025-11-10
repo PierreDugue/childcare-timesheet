@@ -70,25 +70,25 @@ export const familySlice = createSlice({
       state,
       action: PayloadAction<{ family: Family; log: FamilyLogs }>
     ) => {
-      // const { familyId, log } = action.payload;
-      // const family = state.value.find((f) => f.familyId === familyId);
-      // const existingLog = family?.logs.find(
-      //   (familyLog) =>
-      //     new Date(familyLog.date).toString() === new Date(log.date).toString()
-      // );
-
-      // if (!family) return;
-      // if (!existingLog) {
-      //   family?.logs.push(log);
-      // } else {
-      //   existingLog.startHour = log.startHour;
-      //   existingLog.endHour = log.endHour;
-      //   existingLog.signature = log.signature;
-      //   existingLog.comment = log.comment;
-      // }
     },
-    addLogsSuccess: () => {
+    addLogsSuccess: (state, { payload: { family, log } }: PayloadAction<{ family: Family; log: FamilyLogs }>) => {
+      const currentFamily = state.value.find((f) => f.familyId === family.familyId);
+      console.log('currentfamily', currentFamily)
+      if (!currentFamily) return;
 
+      const existingLog = currentFamily?.logs.find(
+        (familyLog) =>
+          new Date(familyLog.date).toString() === new Date(log.date).toString()
+      );
+
+      if (!existingLog) {
+        currentFamily?.logs.push(log);
+      } else {
+        existingLog.startHour = log.startHour;
+        existingLog.endHour = log.endHour;
+        existingLog.signature = log.signature;
+        existingLog.comment = log.comment;
+      }
     },
     addLogsError: () => {
 
