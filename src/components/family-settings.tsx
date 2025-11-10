@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FamilyTable } from "./family-table";
 import { FamilyDialog } from "./logging/family-dialog";
 import { Menu } from "./menu";
-import { useDispatch } from "react-redux";
-import { fetchFamilies } from "../slices/familySlice";
 
 export function FamilySettings() {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [familyId, setFamilyId] = useState<string>("");
-  const dispatch = useDispatch();
 
   const handleAdd = () => {
     setFamilyId("");
@@ -24,10 +21,6 @@ export function FamilySettings() {
   const handleClose = () => {
     setIsDialogOpen(false);
   };
-
-  useEffect(() => {
-    dispatch(fetchFamilies())
-  }, [])
 
   return (
     <div>

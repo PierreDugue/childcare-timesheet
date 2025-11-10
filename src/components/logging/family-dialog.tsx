@@ -38,15 +38,14 @@ export function FamilyDialog(props: {
       return;
     }
 
-    if (currentUser?.userId)
-      dispatch(
-        addFamily({
-          name: data.name,
-          familyId: "",
-          userId: currentUser?.userId,
-          logs: [],
-        })
-      );
+    // if (currentUser?.userId)
+    dispatch(
+      addFamily({
+        name: data.name,
+        familyId: "",
+        logs: [],
+      }))
+    // );
     reset({ name: "" });
     handleClose();
   };

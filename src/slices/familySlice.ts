@@ -27,7 +27,7 @@ export const familySlice = createSlice({
     },
     addFamilySuccess: (state, action: PayloadAction<Family>) => {
       console.log("Family added with ID:", action.payload);
-      // state.value.push(action.payload);
+      state.value.push(action.payload);
     },
     addFamilyError: (state, action: PayloadAction<string>) => {
       console.log(action.payload)
@@ -36,13 +36,16 @@ export const familySlice = createSlice({
       state,
       action: PayloadAction<{ familyId: string; newName: string }>
     ) => {
-
     },
     updateFamilySuccess: (
       state,
-      action: PayloadAction<{ familyId: string; newName: string }>
+      action: PayloadAction<Family>
     ) => {
+      const familyToUpdate = state.value.findIndex((family) => {
+        return family.familyId === action.payload.familyId
+      })
 
+      state.value[familyToUpdate] = action.payload;
     },
     updateFamilyError: (
       state,
@@ -55,6 +58,10 @@ export const familySlice = createSlice({
     },
     removeFamilySuccess: (state, action) => {
       console.log("Family with ID remove success:", action.payload);
+
+      state.value = state.value.filter((family) =>
+        family.familyId !== action.payload
+      )
     },
     removeFamilyError: (state, action: PayloadAction<string>) => {
       console.log(action.payload)
@@ -117,12 +124,12 @@ export const selectFamilyById = createSelector(
   }
 );
 
-export const selectAllFamilyByUserId = createSelector(
-  [selectAllFamily, (_: RootState, userId: string) => userId],
-  (families, userId) => {
-    return families.value?.filter((family) => family.userId === userId);
-  }
-);
+// export const selectAllFamilyByUserId = createSelector(
+//   [selectAllFamily, (_: RootState, userId: string) => userId],
+//   (families, userId) => {
+//     return families.value?.filter((family) => family.userId === userId);
+//   }
+// );
 
 // export const selectAllLogsByFamilyId = createSelector(
 //   [selectAllFamilyByUserId, (_: RootState, familyId: string) => familyId],

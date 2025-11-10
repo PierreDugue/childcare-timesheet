@@ -64,9 +64,12 @@ export function TimeLogForm() {
 
     if (existingLog) {
     } else {
+      if (!currentFamily)
+        return;
+
       dispatch(
         addLogs({
-          familyId: data.family,
+          family: currentFamily,
           log: {
             date: new Date(data.logs.date),
             startHour: data.logs.startHour || "",

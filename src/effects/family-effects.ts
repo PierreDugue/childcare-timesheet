@@ -7,16 +7,13 @@ export const familyListenerMiddleware = createListenerMiddleware();
 familyListenerMiddleware.startListening({
   actionCreator: addFamily,
   effect: async (action, listenerApi) => {
-    console.log(action);
-
     let res;
     if (action?.payload)
       res = await saveFamilyAPI(action.payload);
 
     listenerApi.cancelActiveListeners();
-    if (res?.status === 201 && action?.payload) {
-      listenerApi.dispatch(fetchFamilies());
-      listenerApi.dispatch(addFamilySuccess(action?.payload));
+    if (res?.status === 201) {
+      listenerApi.dispatch(addFamilySuccess(res?.data));
     } else {
       listenerApi.dispatch(addFamilyError(res?.data.error));
     }
@@ -26,15 +23,13 @@ familyListenerMiddleware.startListening({
 familyListenerMiddleware.startListening({
   actionCreator: updateFamily,
   effect: async (action, listenerApi) => {
-
     let res;
     if (action?.payload)
       res = await updateFamilyNameAPI(action.payload.familyId, action.payload.newName);
 
     listenerApi.cancelActiveListeners();
     if (res?.status === 200 && action?.payload) {
-      listenerApi.dispatch(fetchFamilies());
-      listenerApi.dispatch(updateFamilySuccess(action?.payload));
+      listenerApi.dispatch(updateFamilySuccess(res?.data));
     } else {
       listenerApi.dispatch(updateFamilyError(res?.data.error));
     }
@@ -58,9 +53,9 @@ familyListenerMiddleware.startListening({
     let res;
     if (action?.payload)
       res = await removeFamilyAPI(action.payload);
+
     listenerApi.cancelActiveListeners();
     if (res?.status === 204 || res?.status === 200) {
-      listenerApi.dispatch(fetchFamilies());
       listenerApi.dispatch(removeFamilySuccess(action.payload));
     } else {
       listenerApi.dispatch(removeFamilyError(res?.data.error))
@@ -72,11 +67,12 @@ familyListenerMiddleware.startListening({
   actionCreator: addLogs,
   effect: async (action, listenerApi) => {
     let res;
-    if (action?.payload) 
+
+    if (action?.payload)
       res = await addLogsAPI(action.payload.family, action.payload.log);
     listenerApi.cancelActiveListeners();
     if (res?.status === 204 || res?.status === 200) {
-      listenerApi.dispatch(addLogsSuccess());
+      listenerApi.dispatch(addLogsSuccess(res?.data));
     } else {
       listenerApi.dispatch(addLogsError())
     }

@@ -1,7 +1,6 @@
 import z from "zod";
 
 export type User = {
-  userId: string;
   userName: string;
   userEmailAddress: string;
   token: string;
@@ -10,7 +9,6 @@ export type User = {
 
 export type Family = {
   familyId: string;
-  userId: string;
   name: string;
   logs: FamilyLogs[];
 };
@@ -46,3 +44,8 @@ export type FamilyFormInputs = {
   familyId: string;
   name: string;
 };
+
+export type Credentials = {
+  username: string;
+  password: string;
+}

@@ -29,8 +29,14 @@ export function DetailTable(props: { logs: FamilyLogs[] }) {
       field: "date",
       headerName: "Date",
       flex: 1,
-      renderCell: (params: GridRenderCellParams) =>
-        new Intl.DateTimeFormat().format(params.row.date),
+      renderCell: (params) => {
+        const date = new Date(params.row.date);
+        return new Intl.DateTimeFormat('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        }).format(date);
+      }
     },
     {
       field: "startHour",
