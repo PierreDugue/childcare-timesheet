@@ -49,4 +49,5 @@ export type FamilyFormInputs = {
 export type Credentials = {
   username: string;
   password: string;
+  email?: string;
 }

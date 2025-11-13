@@ -26,8 +26,7 @@ export const userSlice = createSlice({
       state.currentUser.token = action.payload;
       console.log('Authenticated succesfully')
     },
-    addUser: (state, action: PayloadAction<User>) => {
-      state.currentUser = action.payload;
+    createUser: (state, action: PayloadAction<Credentials>) => {
     },
     logout: (state) => {
       state.currentUser = initialState.currentUser;
@@ -35,7 +34,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { auth, authSuccess, addUser, logout } = userSlice.actions;
+export const { auth, authSuccess, createUser, logout } = userSlice.actions;
 
 export const getCurrentUser = (state: RootState) => state.user.currentUser;
 

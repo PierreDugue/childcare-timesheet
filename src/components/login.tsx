@@ -1,9 +1,10 @@
 // Login.tsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { auth, getCurrentUser } from "../slices/userSlice";
 import type { RootState } from "../app/store";
+import { styles } from "./auth-components-style";
 
 export function Login() {
     const [username, setUsername] = useState("");
@@ -52,53 +53,13 @@ export function Login() {
                 <button type="submit" style={styles.button}>
                     Log In
                 </button>
+                <div style={{ textAlign: "center", marginTop: "1rem" }}>
+                    <span>Don't have an account? </span>
+                    <Link to="/register" style={{ color: "#007bff", textDecoration: "none" }}>
+                        Create one
+                    </Link>
+                </div>
             </form>
         </div>
     );
-};
-
-// 💅 Inline styles for simplicity
-const styles: Record<string, React.CSSProperties> = {
-    container: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
-        background: "#f5f5f5",
-    },
-    form: {
-        display: "flex",
-        flexDirection: "column",
-        padding: "2rem",
-        background: "white",
-        borderRadius: "8px",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-        width: "300px",
-    },
-    title: {
-        textAlign: "center",
-        marginBottom: "1rem",
-    },
-    input: {
-        padding: "0.5rem",
-        margin: "0.5rem 0",
-        border: "1px solid #ccc",
-        borderRadius: "4px",
-        fontSize: "1rem",
-    },
-    button: {
-        marginTop: "1rem",
-        padding: "0.75rem",
-        backgroundColor: "#007bff",
-        color: "white",
-        border: "none",
-        borderRadius: "4px",
-        fontSize: "1rem",
-        cursor: "pointer",
-    },
-    error: {
-        color: "red",
-        fontSize: "0.9rem",
-        textAlign: "center",
-    },
 };
