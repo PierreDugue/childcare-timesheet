@@ -8,14 +8,12 @@ import {
   selectFamilyById,
   updateFamily,
 } from "../../slices/familySlice";
-import { getCurrentUser } from "../../slices/userSlice";
 
 export function FamilyDialog(props: {
   id: string;
   open: boolean;
   onClose: () => void;
 }) {
-  const currentUser = useSelector(getCurrentUser);
   const dispatch = useDispatch();
   const family = useSelector((state: RootState) =>
     selectFamilyById(state, props?.id)
@@ -38,14 +36,13 @@ export function FamilyDialog(props: {
       return;
     }
 
-    // if (currentUser?.userId)
     dispatch(
       addFamily({
         name: data.name,
         familyId: "",
         logs: [],
       }))
-    // );
+
     reset({ name: "" });
     handleClose();
   };

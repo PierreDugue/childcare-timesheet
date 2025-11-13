@@ -89,25 +89,31 @@ export function TimeLogForm() {
   useEffect(() => {
     setSelectedFamilyId(watchFamilyId);
 
-    if (selectedFamilyId) {
-      if (currentLog) {
-        setValue("logs.startHour", currentLog.startHour);
-        setValue("logs.endHour", currentLog.endHour);
-        setValue("logs.comment", currentLog.comment);
+    if (!selectedFamilyId)
+      return
+
+    if (currentLog) {
+      setValue("logs.startHour", currentLog.startHour);
+      setValue("logs.endHour", currentLog.endHour);
+      setValue("logs.comment", currentLog.comment);
+      if (currentLog.signature !== '') {
         setValue("logs.signature", currentLog.signature);
-        try {
-          signature.current?.fromDataURL(currentLog.signature);
-        } catch (error) {
-          console.warn("Failed to load signature:", error);
-        }
       } else {
-        setValue("logs.startHour", "");
-        setValue("logs.endHour", "");
-        setValue("logs.comment", "");
-        setValue("logs.signature", "");
         signature.current?.clear();
       }
+      try {
+        signature.current?.fromDataURL(currentLog.signature);
+      } catch (error) {
+        console.warn("Failed to load signature:", error);
+      }
+    } else {
+      setValue("logs.startHour", "");
+      setValue("logs.endHour", "");
+      setValue("logs.comment", "");
+      setValue("logs.signature", "");
+      signature.current?.clear();
     }
+
   }, [watchFamilyId, watchDate, selectedFamilyId, currentLog, setValue]);
 
   return (

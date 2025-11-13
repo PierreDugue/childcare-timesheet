@@ -71,11 +71,13 @@ export const familySlice = createSlice({
       action: PayloadAction<{ family: Family; log: FamilyLogs }>
     ) => {
     },
-    addLogsSuccess: (state, action: PayloadAction<{ familyId: string } & FamilyLogs>) => {
-      const { familyId, date, startHour, endHour, comment, signature } = action.payload;
+    addLogsSuccess: (state, action: PayloadAction<{ family: string } & FamilyLogs>) => {
+      const { family, id, date, startHour, endHour, comment, signature } = action.payload;
+
       const currentFamily = state.value.find((f) => {
-        return f.familyId === familyId
+        return f.familyId === family
       });
+
       if (!currentFamily) return;
 
       const existingLog = currentFamily?.logs.find(
@@ -83,8 +85,10 @@ export const familySlice = createSlice({
           new Date(familyLog.date).toString() === new Date(date).toString()
       );
 
+
       if (!existingLog) {
         currentFamily?.logs.push({
+          id,
           date,
           startHour,
           endHour,
@@ -101,6 +105,25 @@ export const familySlice = createSlice({
     addLogsError: (state, action: PayloadAction<string>) => {
       console.log(action.payload)
     },
+    removeLog: (state,
+      action: PayloadAction<{ logId: number, familyId: string }>) => {
+    },
+    removeLogSuccess: (state,
+      action: PayloadAction<{ logId: number, familyId: string }>) => {
+      const { logId, familyId } = action.payload;
+
+      const currentFamily = state.value.find((f) => {
+        return f.familyId === familyId
+      });
+
+      currentFamily?.logs.filter((log) => {
+        return log.id !== logId
+      })
+
+    },
+    removeLogError: () => {
+
+    }
   },
 });
 
@@ -120,6 +143,9 @@ export const {
   addLogs,
   addLogsSuccess,
   addLogsError,
+  removeLog,
+  removeLogSuccess,
+  removeLogError
 } = familySlice.actions;
 export const selectAllFamily = (state: RootState) => state.family;
 export const selectFamilyId = (state: RootState, familyId: string) => familyId;
@@ -127,7 +153,6 @@ export const selectFamilyId = (state: RootState, familyId: string) => familyId;
 export const selectFamilyById = createSelector(
   [selectAllFamily, selectFamilyId],
   (families, familyId) => {
-    console.log("families by id", families, familyId);
     return families.value?.find((family) => family.familyId === familyId);
   }
 );

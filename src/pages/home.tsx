@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { LogoutButton } from "../components/logout";
 
 export function Home() {
   return (
@@ -8,7 +9,10 @@ export function Home() {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/settings">Settings</Link>
+          <Link to="/settings">Settings TEST</Link>
+        </li>
+        <li>
+          <LogoutButton></LogoutButton>
         </li>
       </ul>
     </div>

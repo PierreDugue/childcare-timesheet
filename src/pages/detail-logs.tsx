@@ -14,7 +14,7 @@ export function DetailLogs() {
     <div>
       <Menu></Menu>
       <h1>Detailed logs for {family?.name}</h1>
-      <DetailTable logs={family?.logs || []} />
+      <DetailTable logs={family?.logs || []} familyId={familyId || ''} />
     </div>
   );
 }

@@ -24,14 +24,18 @@ export const userSlice = createSlice({
     },
     authSuccess: (state, action: PayloadAction<string>) => {
       state.currentUser.token = action.payload;
+      console.log('Authenticated succesfully')
     },
     addUser: (state, action: PayloadAction<User>) => {
       state.currentUser = action.payload;
     },
+    logout: (state) => {
+      state.currentUser = initialState.currentUser;
+    }
   },
 });
 
-export const { auth, authSuccess, addUser } = userSlice.actions;
+export const { auth, authSuccess, addUser, logout } = userSlice.actions;
 
 export const getCurrentUser = (state: RootState) => state.user.currentUser;
 

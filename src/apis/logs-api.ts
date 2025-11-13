@@ -66,3 +66,12 @@ export async function updateLogAPI(family: Family, logs: FamilyLogs) {
     throw err;
   }
 }
+
+export async function removeLogAPI(logId: number) {
+  try {
+    return axios.delete(`${LOGS_PATH}${logId}/`, HEADER());
+  } catch (err) {
+    console.error("Failed to remove logs", err);
+    throw err;
+  }
+}

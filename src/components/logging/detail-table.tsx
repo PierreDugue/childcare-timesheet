@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogTitle,
   Paper,
+  Stack,
 } from "@mui/material";
 import {
   DataGrid,
@@ -12,6 +13,10 @@ import {
   type GridRenderCellParams,
 } from "@mui/x-data-grid";
 import { useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { AlertDialog } from "../alert-dialog";
+import { useDispatch } from "react-redux";
+import { removeLog } from "../../slices/familySlice";
 
 export type FamilyLogs = {
   date: Date;
@@ -21,9 +26,16 @@ export type FamilyLogs = {
   comment?: string;
 };
 
-export function DetailTable(props: { logs: FamilyLogs[] }) {
+const ALERT_DIALOG_TITLE = 'Delete log';
+const ALERT_DIALOG_BODY = 'Are you sure you want to delete this log?';
+
+
+export function DetailTable(props: { logs: FamilyLogs[], familyId: string }) {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [signatureToShow, setSignatureToShow] = useState<string>("null");
+  const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false);
+  const [logToDelete, setLogToDelete] = useState<number>(0);
   const columns: GridColDef[] = [
     {
       field: "date",
@@ -69,7 +81,44 @@ export function DetailTable(props: { logs: FamilyLogs[] }) {
         }
       },
     },
+    {
+      field: "",
+      headerName: "Settings",
+      flex: 1,
+      renderCell: (params: GridRenderCellParams) => (
+        <Stack
+          direction="row"
+          spacing={1}
+          justifyContent="flex-end"
+          width="100%"
+        >
+          <Button
+            variant="outlined"
+            size="small"
+            startIcon={<DeleteIcon />}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleRemove(params.row.id);
+            }}
+          ></Button>
+        </Stack>
+      ),
+    },
   ];
+
+  const handleRemove = (logId: number) => {
+    setLogToDelete(logId);
+    setAlertDialogOpen(true);
+  }
+
+  const handleApproveDelete = () => {
+    dispatch(removeLog({ logId: logToDelete, familyId: props.familyId }));
+    setAlertDialogOpen(false);
+  };
+
+  const handleCloseAlert = () => {
+    setAlertDialogOpen(false);
+  };
 
   const rows = props.logs.map((log, index) => ({
     id: index,
@@ -118,6 +167,13 @@ export function DetailTable(props: { logs: FamilyLogs[] }) {
           <Button onClick={onClose}>Close</Button>
         </DialogActions>
       </Dialog>
+      <AlertDialog
+        title={ALERT_DIALOG_TITLE}
+        body={ALERT_DIALOG_BODY}
+        onClose={handleCloseAlert}
+        onApprove={handleApproveDelete}
+        open={alertDialogOpen}
+      ></AlertDialog>
     </>
   );
 }
