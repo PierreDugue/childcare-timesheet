@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import familyReducer from "../slices/familySlice";
 import userReducer from "../slices/userSlice";
+import uiReducer from "../slices/ui-slice";
 import { familyListenerMiddleware } from "../effects/family-effects";
 import { logListenerMiddleware } from "../effects/logs-effects";
 import { authListenerMiddleware } from "../effects/user-effects";
@@ -19,6 +20,7 @@ export const store = configureStore({
   reducer: {
     family: familyReducer,
     user: persistedUserReducer,
+    ui: uiReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

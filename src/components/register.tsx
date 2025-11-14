@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
 import { createUser } from "../slices/userSlice";
 import { styles } from "./auth-components-style";
 
@@ -9,7 +8,6 @@ export function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const navigate = useNavigate();
     const dispatch = useDispatch()
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -61,5 +59,3 @@ export function Register() {
         </div>
     );
 }
-
-// You can reuse the same styles from Login.tsx

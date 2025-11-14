@@ -12,7 +12,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import SignatureCanvas from "react-signature-canvas";
@@ -27,9 +27,9 @@ import styles from "./TimeLogForm.module.scss";
 
 export function TimeLogForm() {
   const [selectedFamilyId, setSelectedFamilyId] = useState<string>("");
+  const selectFamilyByIdMemo = useMemo(() => selectFamilyById, []);
   const currentFamily = useSelector((state: RootState) => {
-    console.log("selectFamilyById", selectFamilyById(state, selectedFamilyId));
-    return selectFamilyById(state, selectedFamilyId);
+    return selectFamilyByIdMemo(state, selectedFamilyId);
   });
 
   const {

@@ -116,10 +116,11 @@ export const familySlice = createSlice({
         return f.familyId === familyId
       });
 
-      currentFamily?.logs.filter((log) => {
-        return log.id !== logId
-      })
+      if (!currentFamily) return;
 
+      currentFamily.logs = currentFamily?.logs.filter((log) => {
+        return log.id !== logId
+      });
     },
     removeLogError: () => {
 
