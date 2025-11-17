@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTitle } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
@@ -54,10 +54,16 @@ export function FamilyDialog(props: {
       </DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <input type="text" {...register("name")} />
-          <button type="submit">Save</button>
+          <TextField
+            fullWidth
+            {...register("name")}
+          />
         </form>
       </DialogContent>
+      <DialogActions>
+        <Button variant="contained" type="submit">Save</Button>
+        <Button onClick={props.onClose}>Cancel</Button>
+      </DialogActions>
     </Dialog>
   );
 }

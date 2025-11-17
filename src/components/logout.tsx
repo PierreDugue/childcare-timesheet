@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "../slices/userSlice";
 import { persistor } from "../app/store";
 import { useNavigate } from "react-router";
+import { Button } from "@mui/material";
 
 export function LogoutButton() {
     const dispatch = useDispatch();
@@ -15,8 +16,8 @@ export function LogoutButton() {
     };
 
     return (
-        <button onClick={handleLogout} style={{ padding: "0.5rem 1rem" }}>
+        <Button onClick={handleLogout} color="inherit">
             Logout
-        </button>
+        </Button>
     );
 }

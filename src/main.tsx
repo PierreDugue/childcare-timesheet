@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { persistor, store } from "./app/store.ts";
 import { PersistGate } from "redux-persist/integration/react";
 import { UiSnackbar } from "./components/ui/snackbar.tsx";
-
+import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

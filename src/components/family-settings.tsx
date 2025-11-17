@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FamilyTable } from "./family-table";
 import { FamilyDialog } from "./logging/family-dialog";
 import { Menu } from "./menu";
+import { Button } from "@mui/material";
 
 export function FamilySettings() {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -25,7 +26,7 @@ export function FamilySettings() {
   return (
     <div>
       <Menu></Menu>
-      <button onClick={handleAdd}>Add Family</button>
+      <Button  variant="contained" onClick={handleAdd}>Add Family</Button>
       <FamilyDialog
         id={familyId}
         open={isDialogOpen}

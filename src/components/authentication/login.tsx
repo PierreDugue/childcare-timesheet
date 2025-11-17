@@ -1,10 +1,9 @@
-// Login.tsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
-import { auth, getCurrentUser } from "../slices/userSlice";
-import type { RootState } from "../app/store";
-import { styles } from "./auth-components-style";
+import { auth, getCurrentUser } from "../../slices/userSlice";
+import type { RootState } from "../../app/store";
+import "./auth-components-style.scss";
 
 export function Login() {
     const [username, setUsername] = useState("");
@@ -12,11 +11,11 @@ export function Login() {
     const [error, setError] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const user = useSelector((state: RootState) => getCurrentUser(state))
+    const user = useSelector((state: RootState) => getCurrentUser(state));
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(auth({ username: username, password: password }))
+        dispatch(auth({ username, password }));
     };
 
     useEffect(() => {
@@ -26,14 +25,14 @@ export function Login() {
     }, [user.token, navigate]);
 
     return (
-        <div style={styles.container}>
-            <form onSubmit={handleSubmit} style={styles.form}>
-                <h2 style={styles.title}>Login</h2>
+        <div className="login-container">
+            <form onSubmit={handleSubmit} className="login-form">
+                <h2 className="login-title">Login</h2>
 
-                {error && <p style={styles.error}>{error}</p>}
+                {error && <p className="login-error">{error}</p>}
 
                 <input
-                    style={styles.input}
+                    className="login-input"
                     type="text"
                     placeholder="Username"
                     value={username}
@@ -42,7 +41,7 @@ export function Login() {
                 />
 
                 <input
-                    style={styles.input}
+                    className="login-input"
                     type="password"
                     placeholder="Password"
                     value={password}
@@ -50,16 +49,17 @@ export function Login() {
                     required
                 />
 
-                <button type="submit" style={styles.button}>
+                <button type="submit" className="login-button">
                     Log In
                 </button>
-                <div style={{ textAlign: "center", marginTop: "1rem" }}>
+
+                <div className="login-footer">
                     <span>Don't have an account? </span>
-                    <Link to="/register" style={{ color: "#007bff", textDecoration: "none" }}>
+                    <Link to="/register" className="login-link">
                         Create one
                     </Link>
                 </div>
             </form>
         </div>
     );
-};
+}
