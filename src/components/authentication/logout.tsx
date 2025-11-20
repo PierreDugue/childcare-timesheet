@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { logout } from "../slices/userSlice";
-import { persistor } from "../app/store";
+import { logout } from "../../slices/user-slice";
+import { persistor } from "../../app/store";
 import { useNavigate } from "react-router";
 import { Button } from "@mui/material";
 

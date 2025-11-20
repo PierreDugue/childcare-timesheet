@@ -1,6 +1,6 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { fecthAllFamiliesAPI, removeFamilyAPI, saveFamilyAPI, updateFamilyNameAPI } from "../apis/logs-api";
-import { addFamily, addFamilyError, addFamilySuccess, fecthAllFamiliesSuccess, fetchFamilies, removeFamily, removeFamilyError, removeFamilySuccess, updateFamily, updateFamilyError, updateFamilySuccess } from "../slices/familySlice";
+import { addFamily, addFamilyError, addFamilySuccess, fecthAllFamiliesSuccess, fetchFamilies, removeFamily, removeFamilyError, removeFamilySuccess, updateFamily, updateFamilyError, updateFamilySuccess } from "../slices/family-slice";
 import { showSnackbar } from "../slices/ui-slice";
 
 export const familyListenerMiddleware = createListenerMiddleware();

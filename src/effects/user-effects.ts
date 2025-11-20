@@ -1,8 +1,8 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { authAPI, createUserAPI } from "../apis/user-api";
-import { fetchFamilies } from "../slices/familySlice";
+import { fetchFamilies } from "../slices/family-slice";
 import { showSnackbar } from "../slices/ui-slice";
-import { auth, authError, authSuccess, createUser } from "../slices/userSlice";
+import { auth, authError, authSuccess, createUser } from "../slices/user-slice";
 import { navigateTo } from "../utils/navigate";
 
 export const authListenerMiddleware = createListenerMiddleware();

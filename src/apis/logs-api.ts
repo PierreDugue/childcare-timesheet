@@ -1,7 +1,7 @@
 import axios from "axios";
 import { store } from "../app/store";
 import type { Family, FamilyLogs } from "../models/models";
-import { getCurrentUser } from "../slices/userSlice";
+import { getCurrentUser } from "../slices/user-slice";
 
 const FAMILY_PATH = 'http://127.0.0.1:8000/api/families/';
 const LOGS_PATH = 'http://127.0.0.1:8000/api/logs/';
@@ -14,7 +14,6 @@ const HEADER = () => {
 
 export async function saveFamilyAPI(data: Family) {
   try {
-    console.log("Saving family", data);
     return axios.post(FAMILY_PATH, data, HEADER());
   } catch (err) {
     console.error("Failed to save family", err);

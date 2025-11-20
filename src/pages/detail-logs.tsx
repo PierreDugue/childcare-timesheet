@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import type { RootState } from "../app/store";
-import { DetailTable } from "../components/logging/detail-table";
-import { selectFamilyById } from "../slices/familySlice";
+import { selectFamilyById } from "../slices/family-slice";
 import { useParams } from "react-router";
-import { Menu } from "../components/menu";
+import { Menu } from "../components/navigation/menu";
+import { DetailTable } from "../components/settings/detail-table";
 
 export function DetailLogs() {
   const { familyId } = useParams<{ familyId: string }>();

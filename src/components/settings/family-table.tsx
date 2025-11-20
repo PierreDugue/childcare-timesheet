@@ -8,10 +8,10 @@ import {
   type GridRenderCellParams,
 } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFamily, selectAllFamily } from "../slices/familySlice";
-import { AlertDialog } from "./alert-dialog";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { removeFamily, selectAllFamily } from "../../slices/family-slice";
+import { AlertDialog } from "../ui/alert-dialog";
 
 export function FamilyTable(props: { onEdit: (familyId: string) => void }) {
   const dispatch = useDispatch();

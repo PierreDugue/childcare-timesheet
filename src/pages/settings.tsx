@@ -1,4 +1,4 @@
-import { FamilySettings } from "../components/family-settings";
+import { FamilySettings } from "../components/settings/family-settings";
 
 export function Settings() {
   return <FamilySettings></FamilySettings>;

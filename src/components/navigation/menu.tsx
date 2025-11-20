@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Button, Box } from "@mui/material";
 import { Link } from "react-router";
-import { LogoutButton } from "./logout";
+import { LogoutButton } from "../authentication/logout";
 
 export function Menu() {
   return (
@@ -22,7 +22,6 @@ export function Menu() {
             Settings
           </Button>
         </Box>
-
         <Box>
           <LogoutButton />
         </Box>

@@ -22,11 +22,6 @@ export type FamilyLogs = {
   signature: string;
 };
 
-// export type LogFormInputs = {
-//   family: string;
-//   logs: FamilyLogs;
-// };
-
 export const newLogSchema = z.object({
   family: z.string().nonempty("Family is required"),
   logs: z.object({

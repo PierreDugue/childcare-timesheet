@@ -23,20 +23,15 @@ export const familySlice = createSlice({
       state.value = action.payload
     },
     fecthAllFamiliesError: () => { },
-    addFamily: (state, action: PayloadAction<Family>) => {
-    },
+    addFamily: (state, action: PayloadAction<Family>) => { },
     addFamilySuccess: (state, action: PayloadAction<Family>) => {
-      console.log("Family added with ID:", action.payload);
       state.value.push(action.payload);
     },
-    addFamilyError: (state, action: PayloadAction<string>) => {
-      console.log(action.payload)
-    },
+    addFamilyError: (state, action: PayloadAction<string>) => { },
     updateFamily: (
       state,
       action: PayloadAction<{ familyId: string; newName: string }>
-    ) => {
-    },
+    ) => { },
     updateFamilySuccess: (
       state,
       action: PayloadAction<Family>
@@ -50,27 +45,18 @@ export const familySlice = createSlice({
     updateFamilyError: (
       state,
       action: PayloadAction<{ familyId: string; newName: string }>
-    ) => {
-
-    },
-    removeFamily: (state, action: PayloadAction<string>) => {
-      console.log('Delete Family with ID:', action.payload)
-    },
+    ) => { },
+    removeFamily: (state, action: PayloadAction<string>) => { },
     removeFamilySuccess: (state, action) => {
-      console.log("Family with ID remove success:", action.payload);
-
       state.value = state.value.filter((family) =>
         family.familyId !== action.payload
       )
     },
-    removeFamilyError: (state, action: PayloadAction<string>) => {
-      console.log(action.payload)
-    },
+    removeFamilyError: (state, action: PayloadAction<string>) => { },
     addLogs: (
       state,
       action: PayloadAction<{ family: Family; log: FamilyLogs }>
-    ) => {
-    },
+    ) => { },
     addLogsSuccess: (state, action: PayloadAction<{ family: string } & FamilyLogs>) => {
       const { family, id, date, startHour, endHour, comment, signature } = action.payload;
 
@@ -102,9 +88,7 @@ export const familySlice = createSlice({
         existingLog.comment = comment;
       }
     },
-    addLogsError: (state, action: PayloadAction<string>) => {
-      console.log(action.payload)
-    },
+    addLogsError: (state, action: PayloadAction<string>) => { },
     removeLog: (state,
       action: PayloadAction<{ logId: number, familyId: string }>) => {
     },
@@ -122,9 +106,7 @@ export const familySlice = createSlice({
         return log.id !== logId
       });
     },
-    removeLogError: () => {
-
-    }
+    removeLogError: () => { }
   },
 });
 
@@ -157,21 +139,5 @@ export const selectFamilyById = createSelector(
     return families.value?.find((family) => family.familyId === familyId);
   }
 );
-
-// export const selectAllFamilyByUserId = createSelector(
-//   [selectAllFamily, (_: RootState, userId: string) => userId],
-//   (families, userId) => {
-//     return families.value?.filter((family) => family.userId === userId);
-//   }
-// );
-
-// export const selectAllLogsByFamilyId = createSelector(
-//   [selectAllFamilyByUserId, (_: RootState, familyId: string) => familyId],
-//   (families, familyId) => {
-//     return families.family?.value?.filter(
-//       (family) => family.userId === familyId
-//     );
-//   }
-// );
 
 export default familySlice.reducer;

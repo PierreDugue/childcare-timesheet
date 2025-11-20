@@ -8,7 +8,7 @@ export interface UserState {
 
 const initialState: UserState = {
   currentUser: {
-    userName: "Pierre Dugué",
+    userName: "",
     userEmailAddress: "",
     token: "",
     config: [],
@@ -19,18 +19,12 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    auth: (state, action: PayloadAction<Credentials>) => {
-
-    },
+    auth: (state, action: PayloadAction<Credentials>) => { },
     authSuccess: (state, action: PayloadAction<string>) => {
       state.currentUser.token = action.payload;
-      console.log('Authenticated succesfully')
     },
-    authError: (state, action: PayloadAction<string>) => {
-      console.error('Failed to authenticate:', action.p)
-    },
-    createUser: (state, action: PayloadAction<Credentials>) => {
-    },
+    authError: (state, action: PayloadAction<string>) => { },
+    createUser: (state, action: PayloadAction<Credentials>) => { },
     logout: (state) => {
       state.currentUser = initialState.currentUser;
     }

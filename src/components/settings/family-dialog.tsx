@@ -7,7 +7,7 @@ import {
   addFamily,
   selectFamilyById,
   updateFamily,
-} from "../../slices/familySlice";
+} from "../../slices/family-slice";
 
 export function FamilyDialog(props: {
   id: string;
@@ -52,18 +52,18 @@ export function FamilyDialog(props: {
       <DialogTitle>
         {family ? <h3>Update family</h3> : <h3>Add family</h3>}
       </DialogTitle>
-      <DialogContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <DialogContent>
           <TextField
             fullWidth
             {...register("name")}
           />
-        </form>
-      </DialogContent>
-      <DialogActions>
-        <Button variant="contained" type="submit">Save</Button>
-        <Button onClick={props.onClose}>Cancel</Button>
-      </DialogActions>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="contained" type="submit">Save</Button>
+          <Button onClick={props.onClose}>Cancel</Button>
+        </DialogActions>
+      </form>
     </Dialog>
   );
 }

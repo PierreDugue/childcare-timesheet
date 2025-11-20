@@ -1,6 +1,6 @@
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { addLogsAPI, removeLogAPI } from "../apis/logs-api";
-import { addLogs, addLogsError, addLogsSuccess, removeLog, removeLogError, removeLogSuccess } from "../slices/familySlice";
+import { addLogs, addLogsError, addLogsSuccess, removeLog, removeLogError, removeLogSuccess } from "../slices/family-slice";
 import { showSnackbar } from "../slices/ui-slice";
 
 export const logListenerMiddleware = createListenerMiddleware();

@@ -1,8 +1,6 @@
-// ProtectedRoute.jsx
-
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router";
-import { type RootState } from "../app/store";
+import type { RootState } from "../../app/store";
 
 interface ProtectedRouteProps {
     children: React.ReactNode;

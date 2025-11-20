@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { LogoutButton } from "../components/logout";
+import { LogoutButton } from "../components/authentication/logout";
 
 export function Home() {
   return (

@@ -4,11 +4,12 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import SignatureCanvas from "react-signature-canvas";
 
-import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Typography } from "@mui/material";
+import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Typography, FormHelperText } from "@mui/material";
 
 import type { RootState } from "../../app/store";
 import { newLogSchema, type LogFormInputs } from "../../models/models";
-import { addLogs, selectAllFamily, selectFamilyById } from "../../slices/familySlice";
+import { addLogs, selectAllFamily, selectFamilyById } from "../../slices/family-slice";
+import "./time-log-form.scss";
 
 export function TimeLogForm() {
   const [selectedFamilyId, setSelectedFamilyId] = useState<string>("");
@@ -99,16 +100,18 @@ export function TimeLogForm() {
   }, [watchFamilyId, watchDate, selectedFamilyId, currentLog, setValue]);
 
   return (
-    <div className="mx-auto max-w-xl p-6 rounded-2xl bg-white">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <h1 className="font-sans">Family Time Log</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex flex-col">
-            <FormControl fullWidth>
+    <div className="grid-container">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <h1>Family Time Log</h1>
+        <div className="inline-2-block">
+          <div>
+            <FormControl>
               <InputLabel id="family-label">Select Family</InputLabel>
               <Select
+                label="Select family"
                 labelId="family-label"
                 defaultValue=""
+                error={!!errors.family?.message}
                 {...register("family")}
               >
                 <MenuItem value="">
@@ -120,27 +123,39 @@ export function TimeLogForm() {
                   </MenuItem>
                 ))}
               </Select>
+
+              <FormHelperText sx={{ minHeight: '15px' }}>
+                {errors?.family?.message}
+              </FormHelperText>
             </FormControl>
-            {errors.family && (
-              <Typography variant="caption" color="error">{errors.family.message}</Typography>
-            )}
           </div>
 
           <div className="flex flex-col">
-            <TextField
-              label="Date"
-              type="date"
-              defaultValue={new Date().toISOString().substring(0, 10)}
-              slotProps={{ inputLabel: { shrink: true } }}
-              {...register("logs.date")}
-              error={!!errors.logs?.date}
-              helperText={errors.logs?.date?.message}
-            />
+            <FormControl>
+              <TextField
+                label="Date"
+                type="date"
+                defaultValue={new Date().toISOString().substring(0, 10)}
+                slotProps={{ inputLabel: { shrink: true } }}
+                {...register("logs.date")}
+                error={!!errors.logs?.date}
+              />
+              <FormHelperText sx={{ minHeight: '15px' }}>
+                {errors.logs?.date?.message}
+              </FormHelperText>
+            </FormControl>
           </div>
         </div>
 
-        <div className="grid grid-flow-col grid-rows-4 gap-4">
-          {/* <div className="flex flex-col"> */}
+        <div className="inline-2-block">
+          <Button
+            className="row-span-1"
+            variant="outlined"
+            size="large"
+            onClick={() => handleSetCurrentTimeClick("logs.startHour")}
+          >
+            Now
+          </Button>
           <TextField
             className="row-span-1"
             label="Start Hour"
@@ -148,17 +163,16 @@ export function TimeLogForm() {
             slotProps={{ inputLabel: { shrink: true } }}
             {...register("logs.startHour")}
           />
+        </div>
+        <div className="inline-2-block">
           <Button
             className="row-span-1"
             variant="outlined"
-            size="small"
-            onClick={() => handleSetCurrentTimeClick("logs.startHour")}
+            size="large"
+            onClick={() => handleSetCurrentTimeClick("logs.endHour")}
           >
             Now
           </Button>
-          {/* </div> */}
-
-          {/* <div className="flex flex-col"> */}
           <TextField
             className="row-span-1"
             label="End Hour"
@@ -166,15 +180,6 @@ export function TimeLogForm() {
             slotProps={{ inputLabel: { shrink: true } }}
             {...register("logs.endHour")}
           />
-          <Button
-            className="row-span-1"
-            variant="outlined"
-            size="small"
-            onClick={() => handleSetCurrentTimeClick("logs.endHour")}
-          >
-            Now
-          </Button>
-          {/* </div> */}
         </div>
 
         <TextField
@@ -187,8 +192,8 @@ export function TimeLogForm() {
           {...register("logs.comment")}
         />
 
-        <div>
-          <Typography variant="subtitle2" className="mb-2">Signature</Typography>
+        <div className="signature-container">
+          <h2>Signature</h2>
           <Controller
             control={control}
             name="logs.signature"
@@ -198,11 +203,7 @@ export function TimeLogForm() {
                   ref={signature}
                   penColor="black"
                   backgroundColor="#fafafa"
-                  canvasProps={{
-                    width: 400,
-                    height: 200,
-                    style: { border: "1px solid #ddd", borderRadius: "0.5rem" },
-                  }}
+                  canvasProps={{ className: 'canvas' }}
                   onEnd={() => {
                     const data = signature.current?.toDataURL() || "";
                     field.onChange(data);
@@ -211,7 +212,7 @@ export function TimeLogForm() {
                 <Button
                   variant="outlined"
                   color="error"
-                  size="small"
+                  size="medium"
                   className="mt-2"
                   onClick={handleClearSignature}
                 >
@@ -222,7 +223,7 @@ export function TimeLogForm() {
           />
         </div>
 
-        <div className="flex justify-end gap-4">
+        <div className="buttons-line">
           <Button
             type="submit"
             variant="contained"

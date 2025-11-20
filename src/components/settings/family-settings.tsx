@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { FamilyTable } from "./family-table";
-import { FamilyDialog } from "./logging/family-dialog";
-import { Menu } from "./menu";
+import { FamilyDialog } from "./family-dialog";
 import { Button } from "@mui/material";
+import { Menu } from "../navigation/menu";
+import { FamilyTable } from "./family-table";
 
 export function FamilySettings() {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);

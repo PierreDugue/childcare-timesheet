@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import familyReducer from "../slices/familySlice";
-import userReducer from "../slices/userSlice";
+import familyReducer from "../slices/family-slice";
+import userReducer from "../slices/user-slice";
 import uiReducer from "../slices/ui-slice";
 import { familyListenerMiddleware } from "../effects/family-effects";
 import { logListenerMiddleware } from "../effects/logs-effects";

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
-import { auth, getCurrentUser } from "../../slices/userSlice";
+import { auth, getCurrentUser } from "../../slices/user-slice";
 import type { RootState } from "../../app/store";
 import "./auth-components-style.scss";
 

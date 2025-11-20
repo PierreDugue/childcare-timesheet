@@ -1,5 +1,5 @@
 import { TimeLogForm } from "../components/logging/time-log-form";
-import { Menu } from "../components/menu";
+import { Menu } from "../components/navigation/menu";
 
 export function TimeLog() {
   return (

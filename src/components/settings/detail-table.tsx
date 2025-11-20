@@ -14,9 +14,9 @@ import {
 } from "@mui/x-data-grid";
 import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { AlertDialog } from "../alert-dialog";
+import { AlertDialog } from "../ui/alert-dialog";
 import { useDispatch } from "react-redux";
-import { removeLog } from "../../slices/familySlice";
+import { removeLog } from "../../slices/family-slice";
 
 export type FamilyLogs = {
   date: Date;

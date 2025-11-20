@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createUser } from "../../slices/userSlice";
+import { createUser } from "../../slices/user-slice";
 import "./auth-components-style.scss";
 import { Link } from "react-router";
+import type { Dispatch } from "@reduxjs/toolkit";
 
 export function Register() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -31,6 +32,7 @@ export function Register() {
                 <input
                     className="login-input"
                     type="text"
+                    data-testid="username"
                     placeholder="Username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
