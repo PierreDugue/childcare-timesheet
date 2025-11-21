@@ -11,6 +11,7 @@ import {
   DataGrid,
   type GridColDef,
   type GridRenderCellParams,
+  type GridCellParams
 } from "@mui/x-data-grid";
 import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -125,7 +126,7 @@ export function DetailTable(props: { logs: FamilyLogs[], familyId: string }) {
     ...log,
   }));
 
-  const handleCellClick = (params: GridRenderCellParams) => {
+  const handleCellClick = (params: GridCellParams ) => {
     if (params.field === "signature" && params.row.signature) {
       setSignatureToShow(params.row.signature);
       setOpen(true);

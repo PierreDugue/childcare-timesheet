@@ -23,14 +23,14 @@ export const familySlice = createSlice({
       state.value = action.payload
     },
     fecthAllFamiliesError: () => { },
-    addFamily: (state, action: PayloadAction<Family>) => { },
+    addFamily: (_state, _action: PayloadAction<Family>) => { },
     addFamilySuccess: (state, action: PayloadAction<Family>) => {
       state.value.push(action.payload);
     },
-    addFamilyError: (state, action: PayloadAction<string>) => { },
+    addFamilyError: (_state, _action: PayloadAction<string>) => { },
     updateFamily: (
-      state,
-      action: PayloadAction<{ familyId: string; newName: string }>
+      _state,
+      _action: PayloadAction<{ familyId: string; newName: string }>
     ) => { },
     updateFamilySuccess: (
       state,
@@ -43,19 +43,19 @@ export const familySlice = createSlice({
       state.value[familyToUpdate] = action.payload;
     },
     updateFamilyError: (
-      state,
-      action: PayloadAction<{ familyId: string; newName: string }>
+      _state,
+      _action: PayloadAction<{ familyId: string; newName: string }>
     ) => { },
-    removeFamily: (state, action: PayloadAction<string>) => { },
+    removeFamily: (_state, _action: PayloadAction<string>) => { },
     removeFamilySuccess: (state, action) => {
       state.value = state.value.filter((family) =>
         family.familyId !== action.payload
       )
     },
-    removeFamilyError: (state, action: PayloadAction<string>) => { },
+    removeFamilyError: (_state, _action: PayloadAction<string>) => { },
     addLogs: (
-      state,
-      action: PayloadAction<{ family: Family; log: FamilyLogs }>
+      _state,
+      _action: PayloadAction<{ family: Family; log: FamilyLogs }>
     ) => { },
     addLogsSuccess: (state, action: PayloadAction<{ family: string } & FamilyLogs>) => {
       const { family, id, date, startHour, endHour, comment, signature } = action.payload;
@@ -88,9 +88,9 @@ export const familySlice = createSlice({
         existingLog.comment = comment;
       }
     },
-    addLogsError: (state, action: PayloadAction<string>) => { },
-    removeLog: (state,
-      action: PayloadAction<{ logId: number, familyId: string }>) => {
+    addLogsError: (_state, _action: PayloadAction<string>) => { },
+    removeLog: (_state,
+      _action: PayloadAction<{ logId: number, familyId: string }>) => {
     },
     removeLogSuccess: (state,
       action: PayloadAction<{ logId: number, familyId: string }>) => {
@@ -131,7 +131,7 @@ export const {
   removeLogError
 } = familySlice.actions;
 export const selectAllFamily = (state: RootState) => state.family;
-export const selectFamilyId = (state: RootState, familyId: string) => familyId;
+export const selectFamilyId = (_state: RootState, familyId: string) => familyId;
 
 export const selectFamilyById = createSelector(
   [selectAllFamily, selectFamilyId],

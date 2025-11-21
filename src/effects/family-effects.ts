@@ -51,7 +51,7 @@ familyListenerMiddleware.startListening({
 
 familyListenerMiddleware.startListening({
   actionCreator: fetchFamilies,
-  effect: async (action, listenerApi) => {
+  effect: async (_action, listenerApi) => {
     const res = await fecthAllFamiliesAPI();
     listenerApi.cancelActiveListeners();
     if (res?.status === 201 || res?.status === 200) {

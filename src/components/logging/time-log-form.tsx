@@ -4,7 +4,7 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import SignatureCanvas from "react-signature-canvas";
 
-import { TextField, Button, Select, MenuItem, InputLabel, FormControl, Typography, FormHelperText } from "@mui/material";
+import { Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 
 import type { RootState } from "../../app/store";
 import { newLogSchema, type LogFormInputs } from "../../models/models";

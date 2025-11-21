@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
-import { auth, getCurrentUser } from "../../slices/user-slice";
 import type { RootState } from "../../app/store";
+import { auth, getCurrentUser } from "../../slices/user-slice";
 import "./auth-components-style.scss";
 
 export function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = useSelector((state: RootState) => getCurrentUser(state));
@@ -28,8 +27,6 @@ export function Login() {
         <div className="login-container">
             <form onSubmit={handleSubmit} className="login-form">
                 <h2 className="login-title">Login</h2>
-
-                {error && <p className="login-error">{error}</p>}
 
                 <input
                     className="login-input"
