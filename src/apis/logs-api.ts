@@ -4,8 +4,8 @@ import type { Family, FamilyLogs } from "../models/models";
 import { getCurrentUser } from "../slices/user-slice";
 import { BASE_URL } from "./utils";
 
-const FAMILY_PATH = `${BASE_URL}/api/families/`
-const LOGS_PATH = `${BASE_URL}/api/logs/`;
+const FAMILY_PATH = `${BASE_URL}api/families/`
+const LOGS_PATH = `${BASE_URL}api/logs/`;
 
 const HEADER = () => {
   const state = store.getState();
