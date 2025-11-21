@@ -2,9 +2,10 @@ import axios from "axios";
 import { store } from "../app/store";
 import type { Family, FamilyLogs } from "../models/models";
 import { getCurrentUser } from "../slices/user-slice";
+import { BASE_URL } from "./utils";
 
-const FAMILY_PATH = 'http://127.0.0.1:8000/api/families/';
-const LOGS_PATH = 'http://127.0.0.1:8000/api/logs/';
+const FAMILY_PATH = `${BASE_URL}/api/families/`
+const LOGS_PATH = `${BASE_URL}/api/logs/`;
 
 const HEADER = () => {
   const state = store.getState();

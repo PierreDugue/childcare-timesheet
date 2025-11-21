@@ -1,8 +1,9 @@
 import axios from "axios";
 import type { Credentials } from "../models/models";
+import { BASE_URL } from "./utils";
 
-const AUTH_PATH = "http://127.0.0.1:8000/api/token/"
-const CREATE_PATH = "http://127.0.0.1:8000/api/register/"
+const AUTH_PATH = `${BASE_URL}/api/token/`
+const CREATE_PATH = `${BASE_URL}/api/register/`
 
 export async function authAPI({ username, password }: Credentials) {
     try {
