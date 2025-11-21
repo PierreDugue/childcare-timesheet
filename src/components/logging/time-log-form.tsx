@@ -123,8 +123,7 @@ export function TimeLogForm() {
                   </MenuItem>
                 ))}
               </Select>
-
-              <FormHelperText sx={{ minHeight: '15px' }}>
+              <FormHelperText>
                 {errors?.family?.message}
               </FormHelperText>
             </FormControl>
@@ -139,10 +138,8 @@ export function TimeLogForm() {
                 slotProps={{ inputLabel: { shrink: true } }}
                 {...register("logs.date")}
                 error={!!errors.logs?.date}
+                helperText={errors.logs?.date?.message}
               />
-              <FormHelperText sx={{ minHeight: '15px' }}>
-                {errors.logs?.date?.message}
-              </FormHelperText>
             </FormControl>
           </div>
         </div>
