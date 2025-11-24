@@ -19,7 +19,7 @@ export function Menu() {
             component={Link}
             to="/settings"
           >
-            Settings
+            Details
           </Button>
         </Box>
         <Box>

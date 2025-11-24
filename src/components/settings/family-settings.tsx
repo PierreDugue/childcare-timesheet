@@ -3,6 +3,7 @@ import { FamilyDialog } from "./family-dialog";
 import { Button } from "@mui/material";
 import { Menu } from "../navigation/menu";
 import { FamilyTable } from "./family-table";
+import './family-settings.scss'
 
 export function FamilySettings() {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -26,7 +27,9 @@ export function FamilySettings() {
   return (
     <div>
       <Menu></Menu>
-      <Button  variant="contained" onClick={handleAdd}>Add Family</Button>
+      <div className="button-container">
+        <Button className="button" variant="outlined" onClick={handleAdd}>Add Family</Button>
+      </div>
       <FamilyDialog
         id={familyId}
         open={isDialogOpen}

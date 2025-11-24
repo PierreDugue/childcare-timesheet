@@ -1,0 +1,12 @@
+.remove-button {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    height: 100%;
+
+    button {
+        span {
+            margin: 0
+        }
+    }
+}

@@ -1,6 +1,17 @@
+@media (min-width: 1080px) {
+    .grid-container {
+        margin: auto;
+        max-width: 1000px;
+    }
+}
+
+@media (max-width: 1080px) {
+    .grid-container {
+        margin: 0 20px;
+    }
+}
+
 .grid-container {
-    margin: auto;
-    max-width: 1000px;
     justify-content: center;
     align-items: center;
 }
@@ -38,4 +49,8 @@
 .form-error {
     margin: 5px 0;
     color: red
+}
+
+::ng-deep .MuiButtonBase-root {
+    height: 200px !important;
 }

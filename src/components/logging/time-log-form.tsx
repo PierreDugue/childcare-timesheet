@@ -6,12 +6,17 @@ import SignatureCanvas from "react-signature-canvas";
 
 import { Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 
+import AddCircle from "@mui/icons-material/AddCircle";
+import { useNavigate } from "react-router";
 import type { RootState } from "../../app/store";
 import { newLogSchema, type LogFormInputs } from "../../models/models";
 import { addLogs, selectAllFamily, selectFamilyById } from "../../slices/family-slice";
 import "./time-log-form.scss";
 
+const buttonHeigh = '56px'
+
 export function TimeLogForm() {
+  const navigate = useNavigate();
   const [selectedFamilyId, setSelectedFamilyId] = useState<string>("");
 
   const selectFamilyByIdMemo = useMemo(() => selectFamilyById, []);
@@ -129,16 +134,24 @@ export function TimeLogForm() {
             </FormControl>
           </div>
 
+          <Button variant="contained"
+            onClick={() => navigate('/settings')}
+            sx={{ height: `${buttonHeigh}`, marginTop: "-21px" }}>
+            <AddCircle />
+          </Button>
+
           <div className="flex flex-col">
             <FormControl>
               <TextField
                 label="Date"
                 type="date"
                 defaultValue={new Date().toISOString().substring(0, 10)}
-                slotProps={{ inputLabel: { shrink: true } }}
+                slotProps={{
+                  inputLabel: { shrink: true },
+                }}
                 {...register("logs.date")}
                 error={!!errors.logs?.date}
-                helperText={errors.logs?.date?.message}
+                helperText={errors.logs?.date?.message ?? ' '}
               />
             </FormControl>
           </div>
@@ -149,6 +162,7 @@ export function TimeLogForm() {
             className="row-span-1"
             variant="outlined"
             size="large"
+            sx={{ height: `${buttonHeigh}` }}
             onClick={() => handleSetCurrentTimeClick("logs.startHour")}
           >
             Now
@@ -166,6 +180,7 @@ export function TimeLogForm() {
             className="row-span-1"
             variant="outlined"
             size="large"
+            sx={{ height: `${buttonHeigh}` }}
             onClick={() => handleSetCurrentTimeClick("logs.endHour")}
           >
             Now

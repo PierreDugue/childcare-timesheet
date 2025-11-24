@@ -1,23 +1,23 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Paper,
-  Stack,
+  Paper
 } from "@mui/material";
 import {
   DataGrid,
+  type GridCellParams,
   type GridColDef,
-  type GridRenderCellParams,
-  type GridCellParams
+  type GridRenderCellParams
 } from "@mui/x-data-grid";
 import { useState } from "react";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { AlertDialog } from "../ui/alert-dialog";
 import { useDispatch } from "react-redux";
 import { removeLog } from "../../slices/family-slice";
+import { AlertDialog } from "../ui/alert-dialog";
+import './detail-table.scss';
 
 export type FamilyLogs = {
   date: Date;
@@ -87,12 +87,7 @@ export function DetailTable(props: { logs: FamilyLogs[], familyId: string }) {
       headerName: "Settings",
       flex: 1,
       renderCell: (params: GridRenderCellParams) => (
-        <Stack
-          direction="row"
-          spacing={1}
-          justifyContent="flex-end"
-          width="100%"
-        >
+        <div className="remove-button">
           <Button
             variant="outlined"
             size="small"
@@ -102,7 +97,7 @@ export function DetailTable(props: { logs: FamilyLogs[], familyId: string }) {
               handleRemove(params.row.id);
             }}
           ></Button>
-        </Stack>
+        </div >
       ),
     },
   ];
@@ -126,7 +121,7 @@ export function DetailTable(props: { logs: FamilyLogs[], familyId: string }) {
     ...log,
   }));
 
-  const handleCellClick = (params: GridCellParams ) => {
+  const handleCellClick = (params: GridCellParams) => {
     if (params.field === "signature" && params.row.signature) {
       setSignatureToShow(params.row.signature);
       setOpen(true);

@@ -1,0 +1,16 @@
+.buttons-container {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: right;
+    height: 100%;
+
+    button {
+        display: flex;
+        justify-content: center;
+
+        span {
+            margin: 0
+        }
+    }
+}

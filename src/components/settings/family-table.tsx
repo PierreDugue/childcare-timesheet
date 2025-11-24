@@ -1,17 +1,18 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ShowChartIcon from "@mui/icons-material/ShowChart";
-import { Button, Paper, Stack } from "@mui/material";
+import { Button, Paper } from "@mui/material";
 import {
   DataGrid,
   type GridColDef,
   type GridRenderCellParams,
 } from "@mui/x-data-grid";
-import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { removeFamily, selectAllFamily } from "../../slices/family-slice";
 import { AlertDialog } from "../ui/alert-dialog";
+import './family-table.scss';
 
 export function FamilyTable(props: { onEdit: (familyId: string) => void }) {
   const dispatch = useDispatch();
@@ -58,12 +59,7 @@ export function FamilyTable(props: { onEdit: (familyId: string) => void }) {
       headerName: "Settings",
       flex: 2,
       renderCell: (params: GridRenderCellParams) => (
-        <Stack
-          direction="row"
-          spacing={1}
-          justifyContent="flex-end"
-          width="100%"
-        >
+        <div className="buttons-container">
           <Button
             variant="outlined"
             size="small"
@@ -73,7 +69,6 @@ export function FamilyTable(props: { onEdit: (familyId: string) => void }) {
               handleEdit(params.row.familyId);
             }}
           ></Button>
-
           <Button
             variant="contained"
             color="error"
@@ -94,7 +89,8 @@ export function FamilyTable(props: { onEdit: (familyId: string) => void }) {
               handleLogs(params.row.familyId);
             }}
           ></Button>
-        </Stack>
+        </div>
+
       ),
     },
   ];
