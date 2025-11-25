@@ -4,16 +4,28 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import SignatureCanvas from "react-signature-canvas";
 
-import { Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 
 import AddCircle from "@mui/icons-material/AddCircle";
 import { useNavigate } from "react-router";
 import type { RootState } from "../../app/store";
 import { newLogSchema, type LogFormInputs } from "../../models/models";
-import { addLogs, selectAllFamily, selectFamilyById } from "../../slices/family-slice";
+import {
+  addLogs,
+  selectAllFamily,
+  selectFamilyById,
+} from "../../slices/family-slice";
 import "./time-log-form.scss";
 
-const buttonHeigh = '56px'
+const buttonHeigh = "56px";
 
 export function TimeLogForm() {
   const navigate = useNavigate();
@@ -24,7 +36,14 @@ export function TimeLogForm() {
     selectFamilyByIdMemo(state, selectedFamilyId)
   );
 
-  const { register, handleSubmit, setValue, watch, control, formState: { errors } } = useForm<LogFormInputs>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm<LogFormInputs>({
     resolver: zodResolver(newLogSchema),
   });
 
@@ -33,8 +52,7 @@ export function TimeLogForm() {
 
   const currentLog = currentFamily?.logs.find(
     (log) =>
-      new Date(log.date).toDateString() ===
-      new Date(watchDate).toDateString()
+      new Date(log.date).toDateString() === new Date(watchDate).toDateString()
   );
 
   const signature = useRef<any>(null);
@@ -62,7 +80,9 @@ export function TimeLogForm() {
     dispatch(addLogs(updatedLog));
   };
 
-  const handleSetCurrentTimeClick = (field: "logs.startHour" | "logs.endHour") => {
+  const handleSetCurrentTimeClick = (
+    field: "logs.startHour" | "logs.endHour"
+  ) => {
     const now = new Date();
     const formatted = `${now.getHours().toString().padStart(2, "0")}:${now
       .getMinutes()
@@ -113,6 +133,7 @@ export function TimeLogForm() {
             <FormControl>
               <InputLabel id="family-label">Select Family</InputLabel>
               <Select
+                data-cy="time-log-family-select"
                 label="Select family"
                 labelId="family-label"
                 defaultValue=""
@@ -128,15 +149,15 @@ export function TimeLogForm() {
                   </MenuItem>
                 ))}
               </Select>
-              <FormHelperText>
-                {errors?.family?.message}
-              </FormHelperText>
+              <FormHelperText>{errors?.family?.message}</FormHelperText>
             </FormControl>
           </div>
 
-          <Button variant="contained"
-            onClick={() => navigate('/settings')}
-            sx={{ height: `${buttonHeigh}`, marginTop: "-21px" }}>
+          <Button
+            variant="contained"
+            onClick={() => navigate("/settings")}
+            sx={{ height: `${buttonHeigh}`, marginTop: "-21px" }}
+          >
             <AddCircle />
           </Button>
 
@@ -151,7 +172,7 @@ export function TimeLogForm() {
                 }}
                 {...register("logs.date")}
                 error={!!errors.logs?.date}
-                helperText={errors.logs?.date?.message ?? ' '}
+                helperText={errors.logs?.date?.message ?? " "}
               />
             </FormControl>
           </div>
@@ -215,7 +236,7 @@ export function TimeLogForm() {
                   ref={signature}
                   penColor="black"
                   backgroundColor="#fafafa"
-                  canvasProps={{ className: 'canvas' }}
+                  canvasProps={{ className: "canvas" }}
                   onEnd={() => {
                     const data = signature.current?.toDataURL() || "";
                     field.onChange(data);
@@ -243,10 +264,7 @@ export function TimeLogForm() {
           >
             Save
           </Button>
-          <Button
-            type="reset"
-            variant="outlined"
-          >
+          <Button type="reset" variant="outlined">
             Reset
           </Button>
         </div>

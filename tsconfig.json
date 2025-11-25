@@ -10,6 +10,6 @@
   ],
   "compilerOptions": {
     "types": ["vitest/globals", "vite/client", "node"],
-    "moduleResolution": "node"
-  }
+    "moduleResolution": "node",
+  },
 }
