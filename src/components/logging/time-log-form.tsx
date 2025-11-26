@@ -144,12 +144,18 @@ export function TimeLogForm() {
                   <em>None</em>
                 </MenuItem>
                 {families.value.map((family) => (
-                  <MenuItem key={family.familyId} value={family.familyId}>
+                  <MenuItem
+                    data-cy={`time-log-family-select-option-${family.familyId}`}
+                    key={family.familyId}
+                    value={family.familyId}
+                  >
                     {family.name}
                   </MenuItem>
                 ))}
               </Select>
-              <FormHelperText>{errors?.family?.message}</FormHelperText>
+              <FormHelperText data-cy="time-log-family-select-option-error">
+                {errors?.family?.message}
+              </FormHelperText>
             </FormControl>
           </div>
 
@@ -164,6 +170,7 @@ export function TimeLogForm() {
           <div className="flex flex-col">
             <FormControl>
               <TextField
+                data-cy="time-log-date-input"
                 label="Date"
                 type="date"
                 defaultValue={new Date().toISOString().substring(0, 10)}
@@ -180,6 +187,7 @@ export function TimeLogForm() {
 
         <div className="inline-2-block">
           <Button
+            data-cy="time-log-set-start-now-button"
             className="row-span-1"
             variant="outlined"
             size="large"
@@ -189,6 +197,7 @@ export function TimeLogForm() {
             Now
           </Button>
           <TextField
+            data-cy="time-log-start-hour-input"
             className="row-span-1"
             label="Start Hour"
             type="time"
@@ -198,6 +207,7 @@ export function TimeLogForm() {
         </div>
         <div className="inline-2-block">
           <Button
+            data-cy="time-log-set-end-now-button"
             className="row-span-1"
             variant="outlined"
             size="large"
@@ -207,6 +217,7 @@ export function TimeLogForm() {
             Now
           </Button>
           <TextField
+            data-cy="time-log-end-hour-input"
             className="row-span-1"
             label="End Hour"
             type="time"
@@ -217,6 +228,7 @@ export function TimeLogForm() {
 
         <TextField
           label="Comment"
+          data-cy="time-log-comment-input"
           multiline
           rows={2}
           fullWidth
@@ -258,6 +270,7 @@ export function TimeLogForm() {
 
         <div className="buttons-line">
           <Button
+            data-cy="time-log-save-log-button"
             type="submit"
             variant="contained"
             disabled={currentLog && currentLog.signature !== ""}

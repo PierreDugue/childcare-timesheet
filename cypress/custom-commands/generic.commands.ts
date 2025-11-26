@@ -1,3 +1,5 @@
+import { config } from "chai";
+
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -14,30 +16,51 @@ declare global {
        */
       clearInputAndType(
         text: string,
-        options?: any,
+        options?: any
       ): Cypress.Chainable<Subject>;
+
+      loginFake(): Cypress.Chainable<null>;
     }
   }
 }
 
 export function setUpGenericCommands(): void {
   Cypress.Commands.add(
-    'getBySel',
-    { prevSubject: 'optional' },
+    "getBySel",
+    { prevSubject: "optional" },
     (subject, selector, ...args) => {
       if (subject) {
         return cy.wrap(subject).find(`[data-cy="${selector}"]`, ...args);
       }
       return cy.get(`[data-cy="${selector}"]`, ...args);
-    },
+    }
   );
 
   Cypress.Commands.add(
-    'clearInputAndType',
+    "clearInputAndType",
     { prevSubject: true },
     (subject, text: string, options?) => {
       cy.wrap(subject).clear();
       cy.wrap(subject).type(`{selectAll}${text}`, options);
-    },
+    }
   );
+
+  Cypress.Commands.add("loginFake", () => {
+    const userSlice = {
+      userName: "",
+      userEmailAddress: "",
+      token: "FAKE_TOKEN_123",
+      config: [],
+    };
+
+    const persistRoot = {
+      currentUser: JSON.stringify(userSlice),
+      _persist: JSON.stringify({
+        version: 1,
+        rehydrated: true,
+      }),
+    };
+
+    window.localStorage.setItem("persist:root", JSON.stringify(persistRoot));
+  });
 }

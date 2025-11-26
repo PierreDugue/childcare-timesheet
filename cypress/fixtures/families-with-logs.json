@@ -1,12 +1,12 @@
 [
     {
-        "familyId": "d2144596-7602-4eb0-ae5e-e705f69b4fad",
+        "familyId": "fakeId-1",
         "user": "pilou",
-        "name": "Testone",
+        "name": "first family",
         "logs": [
             {
                 "id": 1,
-                "family": "d2144596-7602-4eb0-ae5e-e705f69b4fad",
+                "family": "fakeId-1",
                 "date": "2025-11-21T00:00:00Z",
                 "startHour": "12:03",
                 "endHour": "12:03",
@@ -15,7 +15,7 @@
             },
             {
                 "id": 5,
-                "family": "d2144596-7602-4eb0-ae5e-e705f69b4fad",
+                "family": "fakeId-1",
                 "date": "2025-11-22T00:00:00Z",
                 "startHour": "18:54",
                 "endHour": "18:54",
@@ -25,13 +25,13 @@
         ]
     },
     {
-        "familyId": "23a2902b-dcdf-4702-9c63-b29e68edec9b",
+        "familyId": "fakeId-2",
         "user": "pilou",
-        "name": "Test",
+        "name": "second family",
         "logs": [
             {
                 "id": 6,
-                "family": "23a2902b-dcdf-4702-9c63-b29e68edec9b",
+                "family": "fakeId-2",
                 "date": "2025-11-25T00:00:00Z",
                 "startHour": "11:46",
                 "endHour": "11:46",
