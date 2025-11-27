@@ -1,9 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { Credentials, User } from "../models/models";
 import type { RootState } from "../app/store";
+import type { Credentials, User } from "../models/models";
 
 export interface UserState {
   currentUser: User;
+  loading?: boolean;
 }
 
 const initialState: UserState = {
@@ -19,20 +20,34 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    auth: (_state, _action: PayloadAction<Credentials>) => { },
+    auth: (state, _action: PayloadAction<Credentials>) => {
+      state.loading = true;
+    },
     authSuccess: (state, action: PayloadAction<string>) => {
       state.currentUser.token = action.payload;
+      state.loading = false;
     },
-    authError: (_state, _action: PayloadAction<string>) => { },
-    createUser: (_state, _action: PayloadAction<Credentials>) => { },
+    authError: (state, _action: PayloadAction<string>) => {
+      state.loading = false;
+    },
+    createUser: (state, _action: PayloadAction<Credentials>) => {
+      state.loading = true;
+    },
+    createUserSuccess: (state) => {
+      state.loading = false;
+    },
+    createUserError: (state) => {
+      state.loading = false;
+    },
     logout: (state) => {
       state.currentUser = initialState.currentUser;
-    }
+    },
   },
 });
 
-export const { auth, authSuccess, authError, createUser, logout } = userSlice.actions;
+export const { auth, authSuccess, authError, createUser, createUserSuccess, createUserError, logout } =
+  userSlice.actions;
 
-export const getCurrentUser = (state: RootState) => state.user.currentUser;
+export const getCurrentUser = (state: RootState) => state.user;
 
 export default userSlice.reducer;

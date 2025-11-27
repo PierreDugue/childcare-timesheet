@@ -10,7 +10,7 @@ const LOGS_PATH = `${BASE_URL}api/logs/`;
 const HEADER = () => {
   const state = store.getState();
   const user = getCurrentUser(state);
-  return { headers: { Authorization: `Bearer ${user.token}` } }
+  return { headers: { Authorization: `Bearer ${user.currentUser.token}` } }
 }
 
 export async function saveFamilyAPI(data: Family) {

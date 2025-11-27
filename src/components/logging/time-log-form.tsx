@@ -12,6 +12,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Tooltip,
 } from "@mui/material";
 
 import AddCircle from "@mui/icons-material/AddCircle";
@@ -269,14 +270,22 @@ export function TimeLogForm() {
         </div>
 
         <div className="buttons-line">
-          <Button
-            data-cy="time-log-save-log-button"
-            type="submit"
-            variant="contained"
-            disabled={currentLog && currentLog.signature !== ""}
+          <Tooltip
+            title={
+              currentLog && currentLog.signature !== ""
+                ? "You cannot update logs once it is signed"
+                : ""
+            }
           >
-            Save
-          </Button>
+            <Button
+              data-cy="time-log-save-log-button"
+              type="submit"
+              variant="contained"
+              disabled={currentLog && currentLog.signature !== ""}
+            >
+              Save
+            </Button>
+          </Tooltip>
           <Button type="reset" variant="outlined">
             Reset
           </Button>
