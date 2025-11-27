@@ -14,7 +14,7 @@ export function Register() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const dispatch: Dispatch = useDispatch();
-  const { _currentUser, loading } = useSelector((state: RootState) =>
+  const { loading } = useSelector((state: RootState) =>
     getCurrentUser(state)
   );
   const handleSubmit = (e: React.FormEvent) => {

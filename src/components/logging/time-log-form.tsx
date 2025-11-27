@@ -42,6 +42,7 @@ export function TimeLogForm() {
     handleSubmit,
     setValue,
     watch,
+    reset,
     control,
     formState: { errors },
   } = useForm<LogFormInputs>({
@@ -91,6 +92,20 @@ export function TimeLogForm() {
       .padStart(2, "0")}`;
 
     setValue(field, formatted);
+  };
+
+  const handleReset = () => {
+    // TODO: fix reset not clearing selected family
+    reset({
+      family: "",
+      logs: {
+        date: "",
+        startHour: "",
+        endHour: "",
+        comment: "",
+        signature: "",
+      },
+    });
   };
 
   const families = useSelector(selectAllFamily);
@@ -198,11 +213,13 @@ export function TimeLogForm() {
             Now
           </Button>
           <TextField
-            data-cy="time-log-start-hour-input"
             className="row-span-1"
             label="Start Hour"
             type="time"
-            slotProps={{ inputLabel: { shrink: true } }}
+            slotProps={{
+              input: { inputProps: { "data-cy": "time-log-start-hour-input" } },
+              inputLabel: { shrink: true },
+            }}
             {...register("logs.startHour")}
           />
         </div>
@@ -218,11 +235,13 @@ export function TimeLogForm() {
             Now
           </Button>
           <TextField
-            data-cy="time-log-end-hour-input"
             className="row-span-1"
             label="End Hour"
             type="time"
-            slotProps={{ inputLabel: { shrink: true } }}
+            slotProps={{
+              input: { inputProps: { "data-cy": "time-log-end-hour-input" } },
+              inputLabel: { shrink: true },
+            }}
             {...register("logs.endHour")}
           />
         </div>
@@ -286,7 +305,12 @@ export function TimeLogForm() {
               Save
             </Button>
           </Tooltip>
-          <Button type="reset" variant="outlined">
+          <Button
+            data-cy="time-log-reset-button"
+            type="reset"
+            variant="outlined"
+            onClick={handleReset}
+          >
             Reset
           </Button>
         </div>

@@ -62,7 +62,7 @@ authListenerMiddleware.startListening({
     } catch (err: any) {
       listenerApi.dispatch(
         showSnackbar({
-          message: "An error occured while creating an account",
+          message: `An error occured while creating an account: ${err.response?.data?.detail || err.message}`,
           severity: "error",
         })
       );

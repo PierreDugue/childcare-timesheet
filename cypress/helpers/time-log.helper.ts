@@ -34,4 +34,8 @@ export class TimeLogPage {
   getHourInput(option: string) {
     return cy.getBySel(`time-log-${option}-hour-input`);
   }
+
+  getResetButton() {
+    return cy.getBySel("time-log-reset-button");
+  }
 }

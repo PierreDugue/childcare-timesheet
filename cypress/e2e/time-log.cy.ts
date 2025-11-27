@@ -27,6 +27,7 @@ describe("Time logger test", () => {
   it("should save a log successfuly", () => {
     TimeLog.getFamilySelector().click();
     TimeLog.getFamilySelectorSelectOption("fakeId-1").click();
+    TimeLog.getDateInput().clear().type("2025-11-26");
     TimeLog.getHourInput("start").type("14:15");
     TimeLog.getHourInput("end").type("14:15");
 
@@ -58,15 +59,28 @@ describe("Time logger test", () => {
     cy.get("@timerLogs.all").should("have.length", 0);
   });
 
-  it.only("should set current time on start and end hour when clicking now button", () => {
-    // const fixedDate = new Date(2025, 10, 26, 14, 15, 0);
-    // cy.clock(fixedDate.getTime());
+  it("should set current time on start and end hour when clicking now button", () => {
+    const fixedDate = new Date(2025, 10, 26, 14, 15, 0);
+    cy.clock(fixedDate.getTime());
 
-    // TimeLog.getNowButton("start").click();
-    // TimeLog.getHourInput("start").then((input) => {
-    //   console.log("input", input);
-    //   expect(input.val()).to.equal("14:15");
-    // });
-    // TimeLog.getHourInput("start").should("have.value", "14:15");
+    TimeLog.getNowButton("start").click();
+    TimeLog.getNowButton("end").click();
+
+    TimeLog.getHourInput("start").should("have.value", "14:15");
+    TimeLog.getHourInput("end").should("have.value", "14:15");
+  });
+
+  it("should clear the form when clicking Reset button", () => {
+    TimeLog.getFamilySelector().click();
+    TimeLog.getFamilySelectorSelectOption("fakeId-1").click();
+    TimeLog.getDateInput().clear().type("2025-11-26");
+    TimeLog.getHourInput("start").type("14:15");
+    TimeLog.getHourInput("end").type("15:15");
+    TimeLog.getCommentInput().clearInputAndType("This is a test log");
+
+    TimeLog.getResetButton().click();
+    TimeLog.getHourInput("start").should("have.value", "");
+    TimeLog.getHourInput("end").should("have.value", "");
+    TimeLog.getCommentInput().should("have.value", "");
   });
 });
