@@ -38,7 +38,6 @@ describe("Time logger test", () => {
     TimeLog.getSaveLogButton().click();
 
     cy.wait("@timerLogs").then((intercept) => {
-      console.log("intercetp", intercept.request.body, logRequestBody);
       expect(intercept.request.body).to.deep.equal(logRequestBody);
       expect(intercept.response.statusCode).to.equal(200);
     });
@@ -82,5 +81,10 @@ describe("Time logger test", () => {
     TimeLog.getHourInput("start").should("have.value", "");
     TimeLog.getHourInput("end").should("have.value", "");
     TimeLog.getCommentInput().should("have.value", "");
+  });
+
+  it('should redirect to detail page', () => {
+    TimeLog.getAddFamilyButton().click();
+    cy.url().should('include', '/settings');
   });
 });

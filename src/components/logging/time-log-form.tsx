@@ -176,6 +176,7 @@ export function TimeLogForm() {
           </div>
 
           <Button
+            data-cy="time-log-add-family-button"
             variant="contained"
             onClick={() => navigate("/settings")}
             sx={{ height: `${buttonHeigh}`, marginTop: "-21px" }}

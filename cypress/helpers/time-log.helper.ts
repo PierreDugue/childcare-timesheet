@@ -38,4 +38,8 @@ export class TimeLogPage {
   getResetButton() {
     return cy.getBySel("time-log-reset-button");
   }
+
+  getAddFamilyButton() {
+    return cy.getBySel("time-log-add-family-button");
+  }
 }

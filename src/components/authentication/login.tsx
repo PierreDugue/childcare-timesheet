@@ -22,7 +22,6 @@ export function Login() {
   };
 
   useEffect(() => {
-    console.log("Current user token:", currentUser.token);
     if (currentUser.token) {
       navigate("/", { replace: true });
     }
