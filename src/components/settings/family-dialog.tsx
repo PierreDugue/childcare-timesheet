@@ -1,4 +1,11 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
@@ -18,7 +25,7 @@ export function FamilyDialog(props: {
   const family = useSelector((state: RootState) =>
     selectFamilyById(state, props?.id)
   );
-  const { register, handleSubmit, reset } = useForm<FamilyFormInputs>({
+  const { register, handleSubmit, reset, watch } = useForm<FamilyFormInputs>({
     values: {
       familyId: props?.id,
       name: props?.id !== "" && family ? family.name : "",
@@ -41,7 +48,8 @@ export function FamilyDialog(props: {
         name: data.name,
         familyId: "",
         logs: [],
-      }))
+      })
+    );
 
     reset({ name: "" });
     handleClose();
@@ -49,18 +57,28 @@ export function FamilyDialog(props: {
 
   return (
     <Dialog open={props?.open} onClose={handleClose}>
-      <DialogTitle>
+      <DialogTitle data-cy="family-dialog-title">
         {family ? <h3>Update family</h3> : <h3>Add family</h3>}
       </DialogTitle>
       <form onSubmit={handleSubmit(onSubmit)}>
         <DialogContent>
           <TextField
+            slotProps={{
+              input: { inputProps: { "data-cy": "family-name-input" } },
+            }}
             fullWidth
             {...register("name")}
           />
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" type="submit">Save</Button>
+          <Button
+            disabled={watch("name").trim() === ""}
+            data-cy="add-family-submit-button"
+            variant="contained"
+            type="submit"
+          >
+            Save
+          </Button>
           <Button onClick={props.onClose}>Cancel</Button>
         </DialogActions>
       </form>

@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { removeFamily, selectAllFamily } from "../../slices/family-slice";
 import { AlertDialog } from "../ui/alert-dialog";
-import './family-table.scss';
+import "./family-table.scss";
 
 export function FamilyTable(props: { onEdit: (familyId: string) => void }) {
   const dispatch = useDispatch();
@@ -61,6 +61,7 @@ export function FamilyTable(props: { onEdit: (familyId: string) => void }) {
       renderCell: (params: GridRenderCellParams) => (
         <div className="buttons-container">
           <Button
+            data-cy={`edit-family-button-${params.row.familyId}`}
             variant="outlined"
             size="small"
             startIcon={<EditIcon />}
@@ -70,6 +71,7 @@ export function FamilyTable(props: { onEdit: (familyId: string) => void }) {
             }}
           ></Button>
           <Button
+            data-cy={`delete-family-button-${params.row.familyId}`}
             variant="contained"
             color="error"
             size="small"
@@ -80,6 +82,7 @@ export function FamilyTable(props: { onEdit: (familyId: string) => void }) {
             }}
           ></Button>
           <Button
+            data-cy={`view-logs-button-${params.row.familyId}`}
             variant="contained"
             color="error"
             size="small"
@@ -90,7 +93,6 @@ export function FamilyTable(props: { onEdit: (familyId: string) => void }) {
             }}
           ></Button>
         </div>
-
       ),
     },
   ];

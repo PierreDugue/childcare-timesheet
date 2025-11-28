@@ -20,3 +20,19 @@ export function stubTimerLogs(fixture: string): Cypress.Chainable<null> {
     fixture,
   });
 }
+
+export function stubAddFamily(fixture: string): Cypress.Chainable<null> {
+  return cy.intercept("POST", FAMILY_PATH, {
+    fixture,
+  });
+}
+
+export function stubUpdateFamily(fixture: string, familyId: string): Cypress.Chainable<null> {
+  return cy.intercept("PATCH", `${FAMILY_PATH}${familyId}/`, {
+    fixture,
+  });
+}
+
+export function stubDeleteFamily(familyId: string): Cypress.Chainable<null> {
+  return cy.intercept("DELETE", `${FAMILY_PATH}${familyId}/`);
+}

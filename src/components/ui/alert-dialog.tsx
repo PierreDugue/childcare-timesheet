@@ -20,7 +20,7 @@ export function AlertDialog(props: {
         <p>{props.body}</p>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.onApprove}>DELETE</Button>
+        <Button data-cy="delete-confirm-family" onClick={props.onApprove}>DELETE</Button>
         <Button onClick={props.onClose}>Cancel</Button>
       </DialogActions>
     </Dialog>

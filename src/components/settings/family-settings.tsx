@@ -28,7 +28,7 @@ export function FamilySettings() {
     <div>
       <Menu></Menu>
       <div className="button-container">
-        <Button className="button" variant="outlined" onClick={handleAdd}>Add Family</Button>
+        <Button data-cy="add-family-button" className="button" variant="outlined" onClick={handleAdd}>Add Family</Button>
       </div>
       <FamilyDialog
         id={familyId}
